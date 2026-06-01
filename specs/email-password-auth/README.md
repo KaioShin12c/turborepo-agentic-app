@@ -43,4 +43,4 @@ graph TD
 - [x] [task-03-client-signup-integration](./tasks/task-03-client-signup-integration.md) — Wire signup form to Better Auth client
 
 ### Wave 4
-- [ ] [task-04-migrations-and-verification](./tasks/task-04-migrations-and-verification.md) — Generate migrations and verify the feature
+- [x] [task-04-migrations-and-verification](./tasks/task-04-migrations-and-verification.md) — Generate migrations and verify the feature

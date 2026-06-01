@@ -40,7 +40,7 @@ graph TD
 
 ### Wave 2
 
-- [ ] [task-03-github-auth-ui](./tasks/task-03-github-auth-ui.md) — Wire login and signup GitHub buttons to Better Auth social sign-in
+- [x] [task-03-github-auth-ui](./tasks/task-03-github-auth-ui.md) — Wire login and signup GitHub buttons to Better Auth social sign-in
 
 ### Wave 3
 

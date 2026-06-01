@@ -37,7 +37,7 @@ graph TD
 - [x] [task-01-auth-dependencies-and-schema](./tasks/task-01-auth-dependencies-and-schema.md) — Add Better Auth dependencies and database schema
 
 ### Wave 2
-- [ ] [task-02-server-auth-config-and-handler](./tasks/task-02-server-auth-config-and-handler.md) — Add Better Auth server config and API route handler
+- [x] [task-02-server-auth-config-and-handler](./tasks/task-02-server-auth-config-and-handler.md) — Add Better Auth server config and API route handler
 
 ### Wave 3
 - [ ] [task-03-client-signup-integration](./tasks/task-03-client-signup-integration.md) — Wire signup form to Better Auth client

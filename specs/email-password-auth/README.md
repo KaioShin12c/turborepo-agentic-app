@@ -40,7 +40,7 @@ graph TD
 - [x] [task-02-server-auth-config-and-handler](./tasks/task-02-server-auth-config-and-handler.md) — Add Better Auth server config and API route handler
 
 ### Wave 3
-- [ ] [task-03-client-signup-integration](./tasks/task-03-client-signup-integration.md) — Wire signup form to Better Auth client
+- [x] [task-03-client-signup-integration](./tasks/task-03-client-signup-integration.md) — Wire signup form to Better Auth client
 
 ### Wave 4
 - [ ] [task-04-migrations-and-verification](./tasks/task-04-migrations-and-verification.md) — Generate migrations and verify the feature

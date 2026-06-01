@@ -44,4 +44,4 @@ graph TD
 
 ### Wave 3
 
-- [ ] [task-04-verify-auth-and-migrations](./tasks/task-04-verify-auth-and-migrations.md) — Verify migrations, quality checks, and Better Auth implementation
+- [x] [task-04-verify-auth-and-migrations](./tasks/task-04-verify-auth-and-migrations.md) — Verify migrations, quality checks, and Better Auth implementation

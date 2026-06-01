@@ -94,12 +94,12 @@ Suggested GitHub loading button contents:
 
 ## Acceptance Criteria
 
-- [ ] Login page's existing GitHub button calls `authClient.signIn.social` with provider `github`.
-- [ ] Signup page includes a GitHub auth button in the existing card design and calls the same Better Auth social API.
-- [ ] GitHub loading state is visible and prevents duplicate clicks.
-- [ ] GitHub errors are surfaced through the page's auth error UI.
-- [ ] Existing email/password login and signup flows remain intact.
-- [ ] No hand-written OAuth URL construction or raw OAuth `fetch` calls are added.
+- [x] Login page's existing GitHub button calls `authClient.signIn.social` with provider `github`.
+- [x] Signup page includes a GitHub auth button in the existing card design and calls the same Better Auth social API.
+- [x] GitHub loading state is visible and prevents duplicate clicks.
+- [x] GitHub errors are surfaced through the page's auth error UI.
+- [x] Existing email/password login and signup flows remain intact.
+- [x] No hand-written OAuth URL construction or raw OAuth `fetch` calls are added.
 
 ## Notes
 

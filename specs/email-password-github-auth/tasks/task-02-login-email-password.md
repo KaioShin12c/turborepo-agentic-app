@@ -122,12 +122,12 @@ const onSubmit = async (values: LoginFormValues) => {
 
 ## Acceptance Criteria
 
-- [ ] Login submit handler is async and calls `authClient.signIn.email` after local validation succeeds.
-- [ ] The fake timeout login behavior is removed.
-- [ ] `rememberMe` from the form is passed to Better Auth.
-- [ ] Auth errors are displayed with `role="alert"` and do not overwrite field validation errors.
-- [ ] Existing login page layout, typography, colors, and shadcn/ui components remain visually consistent.
-- [ ] TypeScript types remain valid without `any` casts.
+- [x] Login submit handler is async and calls `authClient.signIn.email` after local validation succeeds.
+- [x] The fake timeout login behavior is removed.
+- [x] `rememberMe` from the form is passed to Better Auth.
+- [x] Auth errors are displayed with `role="alert"` and do not overwrite field validation errors.
+- [x] Existing login page layout, typography, colors, and shadcn/ui components remain visually consistent.
+- [x] TypeScript types remain valid without `any` casts.
 
 ## Notes
 

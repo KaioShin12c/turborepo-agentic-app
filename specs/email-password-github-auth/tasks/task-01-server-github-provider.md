@@ -80,11 +80,11 @@ export const auth = betterAuth({
 
 ## Acceptance Criteria
 
-- [ ] `apps/tanstack-app/src/lib/auth.ts` includes `socialProviders.github` with `process.env.GITHUB_CLIENT_ID!` and `process.env.GITHUB_CLIENT_SECRET!`.
-- [ ] Existing `emailAndPassword.enabled` remains true.
-- [ ] Existing Drizzle adapter configuration remains intact and uses `provider: "pg"` plus the imported schema.
-- [ ] No manual GitHub OAuth route is added outside Better Auth's handler.
-- [ ] No insecure Better Auth advanced flags such as `disableCSRFCheck` or `disableOriginCheck` are introduced.
+- [x] `apps/tanstack-app/src/lib/auth.ts` includes `socialProviders.github` with `process.env.GITHUB_CLIENT_ID!` and `process.env.GITHUB_CLIENT_SECRET!`.
+- [x] Existing `emailAndPassword.enabled` remains true.
+- [x] Existing Drizzle adapter configuration remains intact and uses `provider: "pg"` plus the imported schema.
+- [x] No manual GitHub OAuth route is added outside Better Auth's handler.
+- [x] No insecure Better Auth advanced flags such as `disableCSRFCheck` or `disableOriginCheck` are introduced.
 
 ## Notes
 

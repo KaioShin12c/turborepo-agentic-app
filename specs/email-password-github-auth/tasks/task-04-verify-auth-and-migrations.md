@@ -120,14 +120,14 @@ await authClient.signIn.social({
 
 ## Acceptance Criteria
 
-- [ ] If schema changed, `pnpm db:generate` and `pnpm db:migrate` were run and results documented.
-- [ ] `drizzle push` was not used.
-- [ ] `pnpm lint` result is documented.
-- [ ] `pnpm check-types` result is documented.
-- [ ] `pnpm build` result is documented.
-- [ ] Better Auth server config and client calls match the expected patterns above.
-- [ ] A Better Auth-focused review is completed or explicitly reported as not run.
-- [ ] Any failures caused by missing env vars are reported with exact variable names and commands.
+- [x] If schema changed, `pnpm db:generate` and `pnpm db:migrate` were run and results documented.
+- [x] `drizzle push` was not used.
+- [x] `pnpm lint` result is documented.
+- [x] `pnpm check-types` result is documented.
+- [x] `pnpm build` result is documented.
+- [x] Better Auth server config and client calls match the expected patterns above.
+- [x] A Better Auth-focused review is completed or explicitly reported as not run.
+- [x] Any failures caused by missing env vars are reported with exact variable names and commands.
 
 ## Notes
 

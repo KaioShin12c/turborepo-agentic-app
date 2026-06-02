@@ -1,0 +1,33 @@
+{
+  "name": "@repo/auth",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./server": {
+      "import": "./src/server.ts",
+      "types": "./src/server.ts"
+    },
+    "./client": {
+      "import": "./src/client.ts",
+      "types": "./src/client.ts"
+    }
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.6.13",
+    "@repo/db": "workspace:*",
+    "@tanstack/react-start": "latest",
+    "better-auth": "^1.6.13"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.10.2",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0"
+  }
+}

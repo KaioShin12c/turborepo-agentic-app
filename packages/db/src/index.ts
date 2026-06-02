@@ -1,8 +1,13 @@
+import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/postgres-js";
+import path from "node:path";
 import postgres from "postgres";
 import * as schema from "./schema";
 
-// Export toàn bộ schema để các app khác có thể import dễ dàng
+if (!process.env.DATABASE_URL) {
+  config({ path: path.resolve(__dirname, "../.env") });
+}
+
 export * from "./schema";
 export * from "drizzle-orm";
 

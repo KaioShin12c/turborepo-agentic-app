@@ -1,0 +1,8 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "types": ["node"] // Thêm dòng này để chỉ định rõ ràng
+  },
+  "include": ["src", "drizzle.config.ts"] // Đảm bảo drizzle.config.ts cũng được quét qua
+}

@@ -2,6 +2,9 @@ packages:
   - "apps/*"
   - "packages/*"
 
+overrides:
+  kysely: 0.28.8
+
 onlyBuiltDependencies:
   - esbuild
   - lightningcss

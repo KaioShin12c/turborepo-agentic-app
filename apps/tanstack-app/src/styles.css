@@ -4,6 +4,27 @@
   --animate-blob: blob-float 20s infinite ease-in-out;
 }
 
+@layer components {
+  .home-atmosphere {
+    background:
+      radial-gradient(circle at 18% 18%, color-mix(in oklch, var(--primary) 42%, transparent), transparent 32%),
+      radial-gradient(circle at 84% 8%, color-mix(in oklch, var(--chart-2) 34%, transparent), transparent 34%),
+      linear-gradient(120deg, var(--background) 0%, color-mix(in oklch, var(--background) 84%, var(--card)) 46%, var(--card) 100%);
+  }
+
+  .home-grid-overlay {
+    background-image:
+      linear-gradient(color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklch, var(--foreground) 5%, transparent) 1px, transparent 1px);
+    background-size: calc(var(--spacing) * 18) calc(var(--spacing) * 18);
+    mask-image: linear-gradient(to bottom, black, transparent 86%);
+  }
+
+  .home-noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+}
+
 @keyframes blob-float {
   0%, 100% {
     transform: translate(0, 0) scale(1);

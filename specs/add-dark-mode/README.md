@@ -34,4 +34,4 @@ graph TD
 - [x] [task-02-add-dropdown-menu-ui](./tasks/task-02-add-dropdown-menu-ui.md) — Add shared shadcn dropdown-menu primitives
 
 ### Wave 2
-- [ ] [task-03-integrate-root-theme-toggle](./tasks/task-03-integrate-root-theme-toggle.md) — Integrate provider and functional mode toggle in the root shell
+- [x] [task-03-integrate-root-theme-toggle](./tasks/task-03-integrate-root-theme-toggle.md) — Integrate provider and functional mode toggle in the root shell

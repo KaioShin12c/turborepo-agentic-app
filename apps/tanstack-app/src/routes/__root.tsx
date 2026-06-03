@@ -3,7 +3,9 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
+import { ModeToggle } from '../components/mode-toggle'
 import NotFoundPage from '../components/not-found-page'
+import { ThemeProvider } from '../components/theme-provider'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -32,23 +34,28 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        <ThemeProvider defaultTheme="system" storageKey="theme">
+          <div className="fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
+            <ModeToggle />
+          </div>
+          {children}
+          <TanStackDevtools
+            config={{
+              position: 'bottom-right',
+            }}
+            plugins={[
+              {
+                name: 'Tanstack Router',
+                render: <TanStackRouterDevtoolsPanel />,
+              },
+            ]}
+          />
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>

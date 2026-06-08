@@ -1,12 +1,6 @@
 import { ScriptOnce } from "@tanstack/react-router";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
 import type { ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
 
@@ -26,9 +20,7 @@ type ThemeProviderState = {
 const VALID_THEMES = new Set<Theme>(["dark", "light", "system"]);
 const SYSTEM_THEME_QUERY = "(prefers-color-scheme: dark)";
 
-const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
-  undefined,
-);
+const ThemeProviderContext = createContext<ThemeProviderState | undefined>(undefined);
 
 function isTheme(value: string | null): value is Theme {
   return value !== null && VALID_THEMES.has(value as Theme);
@@ -58,11 +50,7 @@ function applyTheme(theme: Theme) {
   root.style.colorScheme = resolved;
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "theme",
-}: ThemeProviderProps) {
+export function ThemeProvider({ children, defaultTheme = "system", storageKey = "theme" }: ThemeProviderProps) {
   const [theme, setThemeState] = useState<Theme>(defaultTheme);
   const [mounted, setMounted] = useState(false);
 

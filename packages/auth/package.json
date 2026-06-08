@@ -19,6 +19,7 @@
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.6.13",
     "@repo/db": "workspace:*",
+    "@repo/env": "workspace:*",
     "@tanstack/react-start": "latest",
     "better-auth": "^1.6.13"
   },

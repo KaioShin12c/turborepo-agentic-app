@@ -7,17 +7,42 @@
 @layer components {
   .home-atmosphere {
     background:
+      radial-gradient(circle at 16% 16%, color-mix(in oklch, var(--primary) 24%, transparent), transparent 31%),
+      radial-gradient(circle at 84% 8%, color-mix(in oklch, var(--chart-2) 18%, transparent), transparent 34%),
+      radial-gradient(circle at 74% 78%, color-mix(in oklch, var(--accent) 28%, transparent), transparent 36%),
+      linear-gradient(
+        120deg,
+        var(--background) 0%,
+        color-mix(in oklch, var(--background) 90%, var(--card)) 46%,
+        var(--card) 100%
+      );
+  }
+
+  .dark .home-atmosphere {
+    background:
       radial-gradient(circle at 18% 18%, color-mix(in oklch, var(--primary) 42%, transparent), transparent 32%),
       radial-gradient(circle at 84% 8%, color-mix(in oklch, var(--chart-2) 34%, transparent), transparent 34%),
-      linear-gradient(120deg, var(--background) 0%, color-mix(in oklch, var(--background) 84%, var(--card)) 46%, var(--card) 100%);
+      radial-gradient(circle at 70% 78%, color-mix(in oklch, var(--accent) 18%, transparent), transparent 38%),
+      linear-gradient(
+        120deg,
+        var(--background) 0%,
+        color-mix(in oklch, var(--background) 84%, var(--card)) 46%,
+        var(--card) 100%
+      );
   }
 
   .home-grid-overlay {
     background-image:
-      linear-gradient(color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(90deg, color-mix(in oklch, var(--foreground) 5%, transparent) 1px, transparent 1px);
+      linear-gradient(color-mix(in oklch, var(--foreground) 5%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklch, var(--foreground) 4%, transparent) 1px, transparent 1px);
     background-size: calc(var(--spacing) * 18) calc(var(--spacing) * 18);
     mask-image: linear-gradient(to bottom, black, transparent 86%);
+  }
+
+  .dark .home-grid-overlay {
+    background-image:
+      linear-gradient(color-mix(in oklch, var(--foreground) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklch, var(--foreground) 5%, transparent) 1px, transparent 1px);
   }
 
   .home-noise-overlay {
@@ -26,7 +51,8 @@
 }
 
 @keyframes blob-float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   25% {

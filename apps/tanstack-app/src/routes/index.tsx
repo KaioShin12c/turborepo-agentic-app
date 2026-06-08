@@ -1,32 +1,22 @@
 import { Button } from "@repo/ui/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@repo/ui/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  ArrowRight,
-  Check,
-  Compass,
-  LockKeyhole,
-  ShieldCheck,
-  Sparkles,
-  Terminal,
-} from "lucide-react";
+import { ArrowRight, Check, Compass, LockKeyhole, ShieldCheck, Sparkles, Terminal } from "lucide-react";
+import { ModeToggle } from "../components/mode-toggle";
 
 export const Route = createFileRoute("/")({ component: Home });
 
 function Home() {
   return (
-    <main className="dark relative min-h-screen overflow-hidden bg-background text-foreground">
+    <main className="relative min-h-screen overflow-hidden bg-background text-foreground">
+      <div className="fixed right-4 top-4 z-50 sm:right-6 sm:top-6">
+        <ModeToggle />
+      </div>
       <div className="pointer-events-none fixed inset-0">
         <div className="home-atmosphere absolute inset-0" />
         <div className="home-grid-overlay absolute inset-0" />
-        <div className="home-noise-overlay absolute inset-0 opacity-5 mix-blend-screen" />
+        <div className="home-noise-overlay absolute inset-0 opacity-[0.035] mix-blend-multiply dark:opacity-5 dark:mix-blend-screen" />
         <div className="absolute left-1/2 top-0 h-px w-2/3 -translate-x-1/2 bg-linear-to-r from-transparent via-primary/70 to-transparent" />
       </div>
 
@@ -36,9 +26,7 @@ function Home() {
             <div className="flex size-11 items-center justify-center rounded-full border border-primary/40 bg-primary/10 shadow-xl">
               <Sparkles />
             </div>
-            <span className="font-mono text-xs uppercase tracking-widest">
-              Lumina gateway
-            </span>
+            <span className="font-mono text-xs uppercase tracking-widest">Lumina gateway</span>
           </div>
 
           <div className="flex flex-col gap-6">
@@ -49,25 +37,18 @@ function Home() {
               A composed threshold for secure teams.
             </h1>
             <p className="max-w-xl text-lg leading-8 text-muted-foreground">
-              Enter Lumina through a refined authentication system built for
-              protected sessions, calm onboarding, and low-noise collaboration.
+              Enter Lumina through a refined authentication system built for protected sessions, calm onboarding, and
+              low-noise collaboration.
             </p>
           </div>
 
           <div className="grid max-w-2xl gap-3 sm:grid-cols-3">
-            {["Private access", "Encrypted sessions", "Audit-ready flow"].map(
-              (item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-border/60 bg-card/55 p-4 backdrop-blur-md"
-                >
-                  <Check className="mb-4 text-primary" />
-                  <p className="font-mono text-xs uppercase leading-5 tracking-widest text-card-foreground">
-                    {item}
-                  </p>
-                </div>
-              ),
-            )}
+            {["Private access", "Encrypted sessions", "Audit-ready flow"].map((item) => (
+              <div key={item} className="rounded-2xl border border-border/60 bg-card/55 p-4 backdrop-blur-md">
+                <Check className="mb-4 text-primary" />
+                <p className="font-mono text-xs uppercase leading-5 tracking-widest text-card-foreground">{item}</p>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -83,9 +64,7 @@ function Home() {
                     <Terminal />
                   </div>
                   <div>
-                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                      Entry console
-                    </p>
+                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Entry console</p>
                     <p className="text-sm text-muted-foreground">lumina.os</p>
                   </div>
                 </div>
@@ -98,8 +77,7 @@ function Home() {
                   Open Lumina
                 </CardTitle>
                 <CardDescription className="text-sm leading-6 text-muted-foreground">
-                  Restore an existing workspace or create a protected account to
-                  begin.
+                  Restore an existing workspace or create a protected account to begin.
                 </CardDescription>
               </div>
             </CardHeader>
@@ -108,14 +86,9 @@ function Home() {
               <div className="rounded-2xl border border-border/60 bg-background/35 p-4 font-mono text-xs text-muted-foreground">
                 <div className="mb-3 flex items-center gap-2 text-primary">
                   <ShieldCheck />
-                  <span className="uppercase tracking-widest">
-                    Verified gateway
-                  </span>
+                  <span className="uppercase tracking-widest">Verified gateway</span>
                 </div>
-                <p className="leading-6">
-                  auth surface: synchronized · route index: ready · status:
-                  protected
-                </p>
+                <p className="leading-6">auth surface: synchronized · route index: ready · status: protected</p>
               </div>
 
               <div className="flex items-center gap-3" aria-hidden="true">

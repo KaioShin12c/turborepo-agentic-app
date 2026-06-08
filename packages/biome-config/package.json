@@ -1,0 +1,14 @@
+{
+  "name": "@repo/biome-config",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./base.json",
+    "./tanstack-start": "./tanstack-start.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

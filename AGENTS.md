@@ -15,7 +15,7 @@
 | Validation     | Zod v3 (server) / v4 (client)                              |
 | Forms          | React Hook Form                                            |
 | Icons          | Lucide React                                               |
-| Lint & Format | Biome                                                      |
+| Lint & Format  | Biome                                                      |
 | Testing        | Vitest + Testing Library (React + jsdom)                   |
 
 ## REPO REFERENCE

@@ -1,5 +1,7 @@
 # Task 02: Configure Pre-commit Hook with lint-staged + Biome
 
+## Status: complete
+
 ## Wave
 
 Wave 2 — depends on Task 01 (Husky installed and `.husky/` directory exists)

@@ -24,5 +24,5 @@ Tasks 02 and 03 touch separate files within `.husky/` — safe for parallel exec
 | Task | Status | Assigned To |
 |------|--------|-------------|
 | task-01-install-husky | complete | coder |
-| task-02-pre-commit-hook | pending | — |
-| task-03-pre-push-hook | pending | — |
+| task-02-pre-commit-hook | complete | coder |
+| task-03-pre-push-hook | complete | coder |

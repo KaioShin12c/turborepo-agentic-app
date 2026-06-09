@@ -1,5 +1,7 @@
 # Task 03: Configure Pre-push Hook
 
+## Status: complete
+
 ## Wave
 
 Wave 2 — depends on Task 01 (Husky installed and `.husky/` directory exists)

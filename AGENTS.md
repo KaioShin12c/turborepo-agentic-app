@@ -1,5 +1,23 @@
 # CRITICAL RULES - MUST FOLLOW
 
+## TECH STACK
+
+| Layer          | Technology                                                 |
+| -------------- | ---------------------------------------------------------- |
+| Monorepo       | Turborepo + pnpm workspaces                                |
+| App Framework  | TanStack Start (full-stack React 19) + TanStack Router     |
+| Build          | Vite 8                                                     |
+| Language       | TypeScript 5.x / 6.x                                       |
+| Database       | PostgreSQL + Drizzle ORM                                   |
+| Auth           | Better Auth (email/password, GitHub OAuth, cookies plugin) |
+| UI Components  | shadcn/ui (18 components in `@repo/ui`)                    |
+| Styling        | Tailwind CSS v4                                            |
+| Validation     | Zod v3 (server) / v4 (client)                              |
+| Forms          | React Hook Form                                            |
+| Icons          | Lucide React                                               |
+| Lint & Format | Biome                                                      |
+| Testing        | Vitest + Testing Library (React + jsdom)                   |
+
 ## REPO REFERENCE
 
 - **Architecture**: `docs/architecture.md` — full tree structure, package descriptions, file locations. Consult this first when navigating the codebase.
@@ -43,31 +61,4 @@
 
 ## UI DESIGN
 
-### Component Strategy
-
-- Always use existing `shadcn/ui` components before creating custom components.
-- Prefer composition and extension over modifying or rewriting existing components.
-- Only create a custom component when no suitable `shadcn/ui` component exists.
-
-### Styling Rules
-
-- Never use inline styles (`style={{ ... }}`) unless absolutely required for dynamic runtime values.
-- Use existing shadcn/ui design tokens, CSS variables, and semantic theme tokens whenever possible.
-- Do not create new color variables when an existing semantic token can be used.
-- Do not hardcode colors, spacing, border radius, shadows, or z-index values in components.
-- Prefer design-system values over arbitrary Tailwind values.
-- Avoid arbitrary Tailwind values (`w-[347px]`, `text-[#123456]`, etc.) unless required by a documented design requirement.
-- Reuse existing spacing, typography, and color scales.
-- All new UI must work correctly in both light and dark themes using existing shadcn/ui theme tokens.
-
-### Responsiveness
-
-- Mobile-first by default.
-- Ensure all new UI works across mobile, tablet, and desktop breakpoints.
-- Avoid fixed widths and heights unless required by the design.
-
-### Consistency
-
-- Follow existing patterns in the codebase before introducing new ones.
-- Reuse existing layouts, form patterns, dialogs, tables, and navigation components whenever possible.
-- Match existing spacing, typography, and interaction patterns.
+- Refer to `docs/ui-design.md` for component strategy, styling rules, responsiveness, and consistency guidelines.

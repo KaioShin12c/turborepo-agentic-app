@@ -35,6 +35,7 @@ Use Turborepo's `--filter` to scope commands to one package.
 
 ```
 pnpm test --filter=@repo/db
+pnpm test:watch --filter=@repo/ui
 pnpm dev --filter=tanstack-app
 ```
 

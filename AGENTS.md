@@ -1,5 +1,10 @@
 # CRITICAL RULES - MUST FOLLOW
 
+## REPO REFERENCE
+
+- **Architecture**: `docs/architecture.md` — full tree structure, package descriptions, file locations. Consult this first when navigating the codebase.
+- **Commands**: `docs/command.md` — all available commands (dev, build, test, db, lint, format, Docker). Quick reference for running and managing the project.
+
 ## RESPONSES
 
 - Keep responses concise and to the point - unless the user asks otherwise
@@ -27,9 +32,14 @@
 
 ## TESTING
 
-- Use any testing tools, libraries available to the project for testing your changes
+- Vitest is configured across all packages via `@repo/vitest-config` (node + react/jsdom presets)
+- Run `pnpm test` from root to execute all tests via Turborepo
+- Run `pnpm test --filter=<package>` to test a single package
+- Use explicit imports (`import { describe, it, expect } from "vitest"`) — globals are disabled
+- Place test files next to source files (`*.test.ts` / `*.test.tsx`)
+- Use `@testing-library/react` + `@testing-library/jest-dom` for React component tests
+- Use `vi.mock()` for mocking dependencies in node packages
 - Never assume your changes simply work, always test!
-- If the project does not have any testing tools, scripts, MCP tools, skills, etc. available for testing, ask the user whether testing should be skipped.
 
 ## UI DESIGN
 

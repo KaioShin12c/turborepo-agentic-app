@@ -279,7 +279,7 @@ importers:
         version: 19.2.0(react@19.2.0)
       shadcn:
         specifier: ^4.9.0
-        version: 4.9.0(@types/node@22.15.3)(typescript@5.9.2)
+        version: 4.9.0(@types/node@22.15.3)(typescript@6.0.3)
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
@@ -315,11 +315,11 @@ importers:
         specifier: ^28.1.0
         version: 28.1.0(@noble/hashes@2.2.0)
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 6.0.3
+        version: 6.0.3
       vitest:
         specifier: ^4.1.5
-        version: 4.1.7(@types/node@22.15.3)(jsdom@28.1.0(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@22.15.3)(typescript@5.9.2))(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
+        version: 4.1.7(@types/node@22.15.3)(jsdom@28.1.0(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@22.15.3)(typescript@6.0.3))(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
 
   packages/vitest-config:
     dependencies:
@@ -7631,15 +7631,6 @@ snapshots:
       object-assign: 4.1.1
       vary: 1.1.2
 
-  cosmiconfig@9.0.1(typescript@5.9.2):
-    dependencies:
-      env-paths: 2.2.1
-      import-fresh: 3.3.1
-      js-yaml: 4.1.1
-      parse-json: 5.2.0
-    optionalDependencies:
-      typescript: 5.9.2
-
   cosmiconfig@9.0.1(typescript@6.0.3):
     dependencies:
       env-paths: 2.2.1
@@ -8470,6 +8461,7 @@ snapshots:
       typescript: 5.9.2
     transitivePeerDependencies:
       - '@types/node'
+    optional: true
 
   msw@2.14.6(@types/node@22.15.3)(typescript@6.0.3):
     dependencies:
@@ -9044,7 +9036,7 @@ snapshots:
       - supports-color
       - typescript
 
-  shadcn@4.9.0(@types/node@22.15.3)(typescript@5.9.2):
+  shadcn@4.9.0(@types/node@22.15.3)(typescript@6.0.3):
     dependencies:
       '@babel/core': 7.29.7
       '@babel/parser': 7.29.7
@@ -9055,7 +9047,7 @@ snapshots:
       '@types/validate-npm-package-name': 4.0.2
       browserslist: 4.28.2
       commander: 14.0.3
-      cosmiconfig: 9.0.1(typescript@5.9.2)
+      cosmiconfig: 9.0.1(typescript@6.0.3)
       dedent: 1.7.2
       deepmerge: 4.3.1
       diff: 8.0.4
@@ -9065,7 +9057,7 @@ snapshots:
       fuzzysort: 3.1.0
       https-proxy-agent: 7.0.6
       kleur: 4.1.5
-      msw: 2.14.6(@types/node@22.15.3)(typescript@5.9.2)
+      msw: 2.14.6(@types/node@22.15.3)(typescript@6.0.3)
       node-fetch: 3.3.2
       open: 11.0.0
       ora: 8.2.0

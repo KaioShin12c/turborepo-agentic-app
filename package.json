@@ -16,11 +16,14 @@
     "test:watch": "turbo run test:watch",
     "check": "biome check .",
     "check:fix": "biome check . --write",
-    "ci": "biome ci ."
+    "ci": "biome ci .",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.16",
     "@repo/biome-config": "workspace:*",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.7",
     "turbo": "^2.9.16",
     "typescript": "5.9.2"
   },

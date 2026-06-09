@@ -273,6 +273,25 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  packages/vitest-config:
+    dependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4))
+      vitest:
+        specifier: ^4.1.5
+        version: 4.1.7(@types/node@22.15.3)(jsdom@28.1.0(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@22.15.3)(typescript@5.9.2))(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4))
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.15.3
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
 packages:
 
   '@acemir/cssom@0.9.31':
@@ -7152,7 +7171,6 @@ snapshots:
     optionalDependencies:
       msw: 2.14.6(@types/node@22.15.3)(typescript@5.9.2)
       vite: 8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4)
-    optional: true
 
   '@vitest/mocker@4.1.7(msw@2.14.6(@types/node@22.15.3)(typescript@6.0.3))(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4))':
     dependencies:
@@ -9078,7 +9096,6 @@ snapshots:
       jsdom: 28.1.0(@noble/hashes@2.2.0)
     transitivePeerDependencies:
       - msw
-    optional: true
 
   vitest@4.1.7(@types/node@22.15.3)(jsdom@28.1.0(@noble/hashes@2.2.0))(msw@2.14.6(@types/node@22.15.3)(typescript@6.0.3))(vite@8.0.14(@types/node@22.15.3)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.22.4)):
     dependencies:

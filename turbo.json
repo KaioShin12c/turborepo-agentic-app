@@ -23,6 +23,14 @@
     "db:studio": {
       "cache": false
     },
+    "test": {
+      "dependsOn": ["^build"],
+      "cache": true
+    },
+    "test:watch": {
+      "cache": false,
+      "persistent": true
+    },
     "//#lint": {},
     "//#lint:fix": {
       "cache": false

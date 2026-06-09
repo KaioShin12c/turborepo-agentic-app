@@ -1,158 +1,144 @@
-# Turborepo starter
+# Turborepo Agentic App
 
-This Turborepo starter is maintained by the Turborepo core team.
+A production-ready, full-stack monorepo boilerplate built with Turborepo, TanStack Start, and PostgreSQL.
 
-## Using this example
+## Tech Stack
 
-Run the following command:
+| Layer | Technology |
+|---|---|
+| Monorepo | Turborepo + pnpm workspaces |
+| App Framework | TanStack Start (full-stack React 19) + TanStack Router |
+| Build | Vite 8 |
+| Language | TypeScript 5.x |
+| Database | PostgreSQL 17 + Drizzle ORM |
+| Auth | Better Auth (email/password, GitHub OAuth) |
+| UI | shadcn/ui (18 components) + Tailwind CSS v4 |
+| Validation | Zod |
+| Lint & Format | Biome |
+| Testing | Vitest + Testing Library |
+| Icons | Lucide React |
 
-```sh
-npx create-turbo@latest
-```
+## Getting Started
 
-## What's inside?
+### Prerequisites
 
-This Turborepo includes the following packages/apps:
+- **Node.js** >= 18
+- **pnpm** >= 9
+- **Docker** (for PostgreSQL)
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Biome](https://biomejs.dev/) for code linting and formatting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Installation
 
 ```sh
-cd my-turborepo
-turbo build
+pnpm install
 ```
 
-Without global `turbo`, use your package manager:
+### Environment Variables
+
+Copy the example env file and fill in the required values:
 
 ```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+cp packages/env/.env.example packages/env/.env
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Required variables:
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Auth secret key |
+| `BETTER_AUTH_URL` | App URL (e.g. `http://localhost:3000`) |
+| `GITHUB_CLIENT_ID` | GitHub OAuth app client ID |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth app client secret |
+
+### Start the Database
 
 ```sh
-turbo build --filter=docs
+docker compose up -d
 ```
 
-Without global `turbo`:
+### Run Database Migrations
 
 ```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+pnpm db:generate
+pnpm db:migrate
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+### Start the Dev Server
 
 ```sh
-cd my-turborepo
-turbo dev
+pnpm dev
 ```
 
-Without global `turbo`, use your package manager:
+The app will be available at [http://localhost:3000](http://localhost:3000).
+
+## Project Structure
+
+```
+turborepo-agentic-app/
+├── apps/
+│   └── tanstack-app/         # Main application
+│       └── src/
+│           ├── routes/       # File-based routes
+│           ├── components/   # Page-level components
+│           ├── hooks/        # App-specific hooks
+│           └── lib/          # Auth functions, utilities
+├── packages/
+│   ├── auth/                 # @repo/auth — Better Auth server + client
+│   ├── db/                   # @repo/db — Drizzle schema, migrations, client
+│   ├── env/                  # @repo/env — Zod-validated environment variables
+│   ├── ui/                   # @repo/ui — shadcn/ui component library
+│   ├── tailwind-config/      # @repo/tailwind-config — Shared Tailwind v4 config
+│   ├── typescript-config/    # @repo/typescript-config — Shared TS configs
+│   ├── vitest-config/        # @repo/vitest-config — Shared Vitest presets
+│   └── biome-config/         # @repo/biome-config — Shared Biome rules
+├── docker-compose.yml        # PostgreSQL 17
+├── turbo.json                # Turborepo pipeline
+└── pnpm-workspace.yaml       # Workspace config
+```
+
+## Available Commands
+
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start all dev servers |
+| `pnpm build` | Build all packages and apps |
+| `pnpm test` | Run all tests via Vitest |
+| `pnpm test:watch` | Run tests in watch mode |
+| `pnpm check-types` | Type-check all packages |
+| `pnpm lint` | Check code quality (Biome) |
+| `pnpm lint:fix` | Auto-fix lint issues |
+| `pnpm format` | Check formatting (Biome) |
+| `pnpm format:fix` | Auto-fix formatting |
+| `pnpm db:generate` | Generate Drizzle migration files |
+| `pnpm db:migrate` | Apply pending database migrations |
+| `pnpm db:studio` | Open Drizzle Studio (DB GUI) |
+
+### Filter by Package
+
+Use `--filter` to scope commands to a specific package:
 
 ```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
+pnpm test --filter=@repo/db
+pnpm dev --filter=tanstack-app
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Features
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+- **Authentication** — Email/password login, signup, and GitHub OAuth with session management
+- **Database** — Drizzle ORM with auto-generated migrations and Drizzle Studio for data browsing
+- **UI Components** — 18 pre-built shadcn/ui components with dark/light theme support
+- **Type Safety** — End-to-end TypeScript with Zod validation for environment variables
+- **Testing** — Vitest configured across all packages with React Testing Library
+- **Code Quality** — Biome for linting and formatting, Husky for pre-commit hooks
+- **Docker** — One-command PostgreSQL setup with persistent data volume
 
-```sh
-turbo dev --filter=web
-```
+## Documentation
 
-Without global `turbo`:
+- [Architecture Overview](docs/architecture.md) — Full tree structure and package descriptions
+- [Commands Reference](docs/command.md) — All available commands
+- [UI Design Guidelines](docs/ui-design.md) — Component strategy and styling rules
+- [Agent Rules](AGENTS.md) — AI agent coding conventions
 
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+## License
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+MIT

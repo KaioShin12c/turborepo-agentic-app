@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import * as schema from "./schema.js";
+import * as schema from "./schema";
 
 describe("@repo/db schema", () => {
   it("should export user table", () => {

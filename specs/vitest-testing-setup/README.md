@@ -46,8 +46,8 @@ graph TD
 - [x] [task-02-configure-turborepo-tasks](./tasks/task-02-configure-turborepo-tasks.md) — Thêm task `test` và `test:watch` vào turbo.json
 
 ### Wave 2
-- [ ] [task-03-wire-up-package-env](./tasks/task-03-wire-up-package-env.md) — Tích hợp vitest vào `@repo/env`
-- [ ] [task-04-wire-up-package-db](./tasks/task-04-wire-up-package-db.md) — Tích hợp vitest vào `@repo/db`
-- [ ] [task-05-wire-up-package-auth](./tasks/task-05-wire-up-package-auth.md) — Tích hợp vitest vào `@repo/auth`
-- [ ] [task-06-wire-up-package-ui](./tasks/task-06-wire-up-package-ui.md) — Tích hợp vitest vào `@repo/ui`
-- [ ] [task-07-wire-up-app-tanstack](./tasks/task-07-wire-up-app-tanstack.md) — Tích hợp vitest vào `apps/tanstack-app`
+- [x] [task-03-wire-up-package-env](./tasks/task-03-wire-up-package-env.md) — Tích hợp vitest vào `@repo/env`
+- [x] [task-04-wire-up-package-db](./tasks/task-04-wire-up-package-db.md) — Tích hợp vitest vào `@repo/db`
+- [x] [task-05-wire-up-package-auth](./tasks/task-05-wire-up-package-auth.md) — Tích hợp vitest vào `@repo/auth`
+- [x] [task-06-wire-up-package-ui](./tasks/task-06-wire-up-package-ui.md) — Tích hợp vitest vào `@repo/ui`
+- [x] [task-07-wire-up-app-tanstack](./tasks/task-07-wire-up-app-tanstack.md) — Tích hợp vitest vào `apps/tanstack-app`

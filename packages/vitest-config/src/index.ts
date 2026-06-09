@@ -1,3 +1,3 @@
-export { baseConfig } from "./base.js";
-export { nodeConfig } from "./node.js";
-export { reactConfig } from "./react.js";
+export { baseConfig } from "./base.ts";
+export { nodeConfig } from "./node.ts";
+export { reactConfig } from "./react.ts";

@@ -36,7 +36,7 @@ export default function DashboardPage({ session }: DashboardPageProps) {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background font-sans text-foreground">
-      <Sidebar sidebarOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} onSignOut={handleSignOut} />
+      <Sidebar sidebarOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
       <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <TopBar session={session} onSignOut={handleSignOut} />

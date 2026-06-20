@@ -4,7 +4,6 @@ import {
   BookOpen,
   HelpCircle,
   LayoutDashboard,
-  LogOut,
   PlusCircle,
   ReceiptText,
   Settings,
@@ -29,5 +28,4 @@ export const NAV_MANAGEMENT: NavItem[] = [
 export const NAV_SETTINGS: NavItem[] = [
   { label: "Setting", icon: Settings },
   { label: "Help & Support", icon: HelpCircle },
-  { label: "Log Out", icon: LogOut, action: "signout" as const },
 ];

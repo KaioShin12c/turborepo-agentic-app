@@ -6,10 +6,9 @@ import { NavSection } from "./nav-section";
 interface SidebarProps {
   sidebarOpen: boolean;
   onToggle: () => void;
-  onSignOut: () => void;
 }
 
-export function Sidebar({ sidebarOpen, onToggle, onSignOut }: SidebarProps) {
+export function Sidebar({ sidebarOpen, onToggle }: SidebarProps) {
   return (
     <TooltipProvider delayDuration={0}>
       <aside
@@ -28,22 +27,19 @@ export function Sidebar({ sidebarOpen, onToggle, onSignOut }: SidebarProps) {
               Bookary
             </TooltipContent>
           </Tooltip>
-          <span className={`ml-2 text-2xl font-bold tracking-tight text-primary ${sidebarOpen ? "" : "lg:hidden"}`}>
+          <span
+            className={`ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-all duration-300 ${
+              sidebarOpen ? "max-w-48 opacity-100" : "max-w-0 opacity-0"
+            }`}
+          >
             Bookary
           </span>
         </div>
 
-        <div className="flex-1 overflow-auto px-3 pt-4">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 pt-4">
           <NavSection title="MAIN MENU" visible={sidebarOpen} items={NAV_MAIN} />
           <NavSection title="MANAGEMENT" visible={sidebarOpen} items={NAV_MANAGEMENT} />
-          <NavSection
-            title="SETTING & OTHERS"
-            visible={sidebarOpen}
-            items={NAV_SETTINGS}
-            onAction={(action) => {
-              if (action === "signout") onSignOut();
-            }}
-          />
+          <NavSection title="SETTING & OTHERS" visible={sidebarOpen} items={NAV_SETTINGS} />
         </div>
 
         <div className="shrink-0 p-3">

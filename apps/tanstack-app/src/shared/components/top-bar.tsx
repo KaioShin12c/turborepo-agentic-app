@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
 import { Input } from "@repo/ui/components/ui/input";
-import { Bell, ChevronDown, Globe, LogOut, Search, Settings, User } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Search, Settings, User } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 
 interface TopBarProps {
@@ -36,27 +36,20 @@ export function TopBar({ session, onSignOut }: TopBarProps) {
         <p className="mt-0.5 text-sm text-muted-foreground">Good morning {userName} 👋</p>
       </div>
 
-      <div className="ml-6 flex-1 max-w-2xl">
-        <div className="relative">
+      <div className="flex-1" />
+
+      <div className="flex items-center gap-2">
+        <div className="relative w-64">
           <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             placeholder="type here to search anything"
-            className="h-11 rounded-2xl border-border bg-muted/60 pl-11 pr-16 text-sm outline-none"
+            className="h-9 rounded-lg border-border bg-muted/60 pl-10 pr-14 text-sm outline-none"
           />
           <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md border border-border bg-background px-2 py-1 text-xs text-muted-foreground">
             ⌘F
           </kbd>
         </div>
-      </div>
-
-      <div className="flex items-center gap-2">
         <ModeToggle />
-        <button
-          type="button"
-          className="grid size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
-        >
-          <Globe size={18} />
-        </button>
         <button
           type="button"
           className="grid size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"

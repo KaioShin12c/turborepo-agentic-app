@@ -1,464 +1,506 @@
 import { authClient } from "@repo/auth/client";
 import type { AuthSession } from "@repo/auth/server";
-import { Avatar, AvatarBadge, AvatarFallback } from "@repo/ui/components/ui/avatar";
-import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
-import { Progress } from "@repo/ui/components/ui/progress";
-import { Separator } from "@repo/ui/components/ui/separator";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuBadge,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarRail,
-  SidebarSeparator,
-  SidebarTrigger,
-} from "@repo/ui/components/ui/sidebar";
-import { cn } from "@repo/ui/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@repo/ui/components/ui/card";
+import { Input } from "@repo/ui/components/ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip";
 import { useRouter } from "@tanstack/react-router";
 import {
   BarChart3,
-  BriefcaseBusiness,
-  CheckCircle2,
-  CircleDollarSign,
-  Clock3,
-  CreditCard,
-  Fingerprint,
-  Gauge,
-  KeyRound,
+  Bell,
+  BookOpen,
+  ChevronDown,
+  ChevronLeft,
+  Clock,
+  Globe,
+  HelpCircle,
   LayoutDashboard,
-  LifeBuoy,
-  Loader2,
+  Library,
   LogOut,
-  MessageSquareText,
-  PanelTop,
-  Settings2,
-  ShieldCheck,
-  Sparkles,
+  PlusCircle,
+  ReceiptText,
+  Search,
+  Settings,
+  TrendingDown,
   TrendingUp,
-  UserRound,
-  UsersRound,
+  UserPlus,
+  Users,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { ModeToggle } from "./mode-toggle";
 
-const navigationItems = [
-  { label: "Overview", icon: LayoutDashboard, isActive: true, badge: "Live" },
-  { label: "Customers", icon: UsersRound },
-  { label: "Revenue", icon: CircleDollarSign },
-  { label: "Messages", icon: MessageSquareText, badge: "8" },
-  { label: "Billing", icon: CreditCard },
+// ---------------------------------------------------------------------------
+// Data
+// ---------------------------------------------------------------------------
+
+const NAV_MAIN = [
+  { label: "Overview", icon: LayoutDashboard, active: true },
+  { label: "Books", icon: BookOpen },
+  { label: "Library Activities", icon: BarChart3 },
+  { label: "Members", icon: Users },
 ];
 
-const workspaceItems = [
-  { label: "Acquisition", value: 78, detail: "+12.4% this month" },
-  { label: "Activation", value: 64, detail: "2,431 qualified users" },
-  { label: "Retention", value: 91, detail: "enterprise cohort steady" },
+const NAV_MANAGEMENT = [
+  { label: "Report & Analytics", icon: BarChart3 },
+  { label: "Overdue Reminder", icon: Bell },
+  { label: "Add Books", icon: PlusCircle },
+  { label: "Fines & Fees", icon: ReceiptText },
 ];
 
-const metrics = [
+const NAV_SETTINGS = [
+  { label: "Setting", icon: Settings },
+  { label: "Help & Support", icon: HelpCircle },
+  { label: "Log Out", icon: LogOut, action: "signout" as const },
+];
+
+const REVENUE_DATA = [
+  { label: "Membership", value: 8800 },
+  { label: "Overdue", value: 7200 },
+  { label: "Events", value: 4910 },
+  { label: "Others", value: 3400 },
+];
+
+const OVERDUE_ITEMS = [
   {
-    label: "Monthly recurring revenue",
-    value: "$84.2K",
-    change: "+18.7%",
-    icon: CircleDollarSign,
+    id: "USR-2007",
+    name: "John Smith",
+    book: "Don Quixote",
+    author: "Miguel de Cervantes",
+    days: 5,
+    fine: 4.5,
+    color: "var(--chart-1)",
+    initial: "J",
   },
   {
-    label: "Active accounts",
-    value: "2,842",
-    change: "+9.1%",
-    icon: UsersRound,
+    id: "USR-2025",
+    name: "Emma",
+    book: "Pride and Prejudice",
+    author: "Jane Austen",
+    days: 4,
+    fine: 3.5,
+    color: "var(--chart-5)",
+    initial: "E",
   },
-  { label: "Pipeline health", value: "94%", change: "On track", icon: Gauge },
 ];
 
-const activityItems = [
-  "Northstar renewal moved to procurement review",
-  "Usage alerts resolved for the Atlas workspace",
-  "Quarterly billing export is ready for finance",
-];
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 
-function formatDate(value?: string | Date | null) {
-  if (!value) return "Not available";
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) return "Not available";
-
-  return new Intl.DateTimeFormat(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
-
-type DashboardPageProps = {
-  session: AuthSession;
-};
+type DashboardPageProps = { session: AuthSession };
 
 export default function DashboardPage({ session }: DashboardPageProps) {
   const router = useRouter();
-  const [isSigningOut, setIsSigningOut] = useState(false);
+  const [_isSigningOut, setIsSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const userName = session?.user?.name || "SaaS operator";
-  const userInitials = useMemo(() => {
-    const nameParts = userName.trim().split(/\s+/).filter(Boolean);
-    return (
-      nameParts
-        .slice(0, 2)
-        .map((part) => part[0]?.toUpperCase())
-        .join("") || "SO"
-    );
-  }, [userName]);
+  const userName = session?.user?.name || "James";
 
   const handleSignOut = async () => {
     setSignOutError(null);
     setIsSigningOut(true);
-
     try {
-      const { error: logoutError } = await authClient.signOut({
-        fetchOptions: {
-          onSuccess: () => {
-            router.navigate({ to: "/login" });
-          },
-        },
+      const { error } = await authClient.signOut({
+        fetchOptions: { onSuccess: () => router.navigate({ to: "/login" }) },
       });
-
-      if (logoutError) {
-        setSignOutError(logoutError.message || "Unable to sign out.");
+      if (error) {
+        setSignOutError(error.message || "Unable to sign out.");
         setIsSigningOut(false);
       }
     } catch {
-      setSignOutError("Unable to sign out right now. Check your connection and try again.");
+      setSignOutError("Unable to sign out right now.");
       setIsSigningOut(false);
     }
   };
 
   return (
-    <SidebarProvider className="min-h-screen bg-background font-['Avenir_Next','Segoe_UI',sans-serif] text-foreground [--sidebar-width:18rem]">
-      <DashboardAtmosphere />
-      <Sidebar collapsible="icon" variant="inset" className="p-3 text-foreground">
-        <SidebarHeader className="rounded-t-[1.75rem] border-x border-t border-border/60 bg-card/70 p-4 shadow-2xl backdrop-blur-2xl">
-          <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-background/35 p-3">
-            <div className="flex size-10 items-center justify-center rounded-2xl border border-primary/25 bg-primary/10 text-primary shadow-xl">
-              <BriefcaseBusiness />
-            </div>
-            <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-              <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                Lumina OS
-              </p>
-              <p className="truncate font-['Avenir_Next','Segoe_UI',sans-serif] text-sm font-semibold text-card-foreground">
-                Private console
-              </p>
+    <div className="flex h-screen overflow-hidden bg-background font-sans text-foreground">
+      {/* ---- Sidebar ---- */}
+      <TooltipProvider delayDuration={0}>
+        <aside
+          className={`flex h-full shrink-0 flex-col border-r border-border bg-card transition-all duration-300 ${
+            sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16"
+          }`}
+        >
+          <div className="flex h-[72px] shrink-0 items-center border-b border-border px-3 overflow-hidden">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
+                  <Library size={22} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent side="right" align="center" hidden={sidebarOpen}>
+                Bookary
+              </TooltipContent>
+            </Tooltip>
+            <span className={`ml-2 text-2xl font-bold tracking-tight text-primary ${sidebarOpen ? "" : "lg:hidden"}`}>
+              Bookary
+            </span>
+          </div>
+
+          <div className="flex-1 overflow-auto px-3 pt-4">
+            <NavSection title="MAIN MENU" visible={sidebarOpen} items={NAV_MAIN} />
+            <NavSection title="MANAGEMENT" visible={sidebarOpen} items={NAV_MANAGEMENT} />
+            <NavSection
+              title="SETTING & OTHERS"
+              visible={sidebarOpen}
+              items={NAV_SETTINGS}
+              onAction={(action) => {
+                if (action === "signout") handleSignOut();
+              }}
+            />
+          </div>
+
+          <div className="shrink-0 p-3">
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="flex w-full items-center justify-center rounded-lg h-10 bg-muted text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+            >
+              <ChevronLeft size={18} className={sidebarOpen ? "" : "rotate-180"} />
+            </button>
+          </div>
+        </aside>
+      </TooltipProvider>
+
+      {/* ---- Main Content ---- */}
+      <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        {/* ---- Top Bar ---- */}
+        <header className="flex items-center gap-4 border-b border-border bg-background px-6 h-[72px] shrink-0">
+          <div className="shrink-0">
+            <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+            <p className="mt-0.5 text-sm text-muted-foreground">Good morning {userName} 👋</p>
+          </div>
+
+          <div className="ml-6 flex-1 max-w-2xl">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="type here to search anything"
+                className="h-11 rounded-2xl border-border bg-muted/60 pl-11 pr-16 text-sm outline-none"
+              />
+              <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md border border-border bg-background px-2 py-1 text-xs text-muted-foreground">
+                ⌘F
+              </kbd>
             </div>
           </div>
-        </SidebarHeader>
 
-        <SidebarContent className="overflow-x-hidden border-x border-border/60 bg-card/70 px-2 py-3 backdrop-blur-2xl">
-          <SidebarGroup className="p-2">
-            <SidebarGroupLabel className="font-[ui-monospace,Menlo,monospace] uppercase tracking-[0.22em] text-muted-foreground">
-              Command
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu className="gap-1.5">
-                {navigationItems.map((item) => (
-                  <SidebarMenuItem key={item.label} className="min-w-0">
-                    <SidebarMenuButton
-                      isActive={item.isActive}
-                      tooltip={item.label}
-                      className="h-11 rounded-2xl border border-transparent px-3 font-['Avenir_Next','Segoe_UI',sans-serif] text-muted-foreground transition-all duration-300 data-[active=true]:border-primary/25 data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:shadow-xl hover:border-border/60 hover:bg-secondary/40 hover:text-foreground"
-                    >
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                    {item.badge ? <SidebarMenuBadge className="text-primary">{item.badge}</SidebarMenuBadge> : null}
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+          <div className="flex items-center gap-2">
+            <ModeToggle />
+            <button
+              type="button"
+              className="grid size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+            >
+              <Globe size={18} />
+            </button>
+            <button
+              type="button"
+              className="grid size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+            >
+              <Bell size={18} />
+            </button>
+            <Button className="h-10 gap-2 rounded-2xl px-5 text-sm font-semibold">
+              <UserPlus size={16} />
+              Add Member
+            </Button>
+          </div>
+        </header>
 
-          <SidebarSeparator className="bg-border/60" />
+        {/* ---- Dashboard Content ---- */}
+        <div className="flex-1 overflow-auto p-6 space-y-6">
+          {signOutError && (
+            <div
+              role="alert"
+              className="rounded-2xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+            >
+              {signOutError}
+            </div>
+          )}
 
-          <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-            <SidebarGroupLabel className="font-[ui-monospace,Menlo,monospace] uppercase tracking-[0.22em] text-muted-foreground">
-              Health
-            </SidebarGroupLabel>
-            <SidebarGroupContent className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-background/35 p-3">
-              {workspaceItems.map((item) => (
-                <div key={item.label} className="flex flex-col gap-2">
-                  <div className="flex items-center justify-between gap-3 text-xs">
-                    <span className="font-medium text-card-foreground">{item.label}</span>
-                    <span className="font-[ui-monospace,Menlo,monospace] text-muted-foreground">{item.value}%</span>
-                  </div>
-                  <Progress
-                    value={item.value}
-                    className="h-1.5 bg-secondary/40 [&_[data-slot=progress-indicator]]:bg-primary"
-                  />
-                  <p className="text-xs text-muted-foreground">{item.detail}</p>
-                </div>
-              ))}
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-
-        <SidebarFooter className="rounded-b-[1.75rem] border-x border-b border-border/60 bg-card/70 p-4 shadow-2xl backdrop-blur-2xl">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="h-10 rounded-2xl text-muted-foreground hover:bg-secondary/40 hover:text-foreground">
-                <Settings2 />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton className="h-10 rounded-2xl text-muted-foreground hover:bg-secondary/40 hover:text-foreground">
-                <LifeBuoy />
-                <span>Support</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-        <SidebarRail />
-      </Sidebar>
-
-      <SidebarInset className="relative bg-transparent">
-        <main className="relative z-10 min-h-screen p-3 md:p-5">
-          <div className="mx-auto flex max-w-7xl flex-col gap-5">
-            <header className="sticky top-3 z-20 flex flex-col gap-4 rounded-[1.75rem] border border-border/60 bg-card/75 p-4 shadow-2xl backdrop-blur-2xl sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 items-center gap-3">
-                <SidebarTrigger className="rounded-xl border border-border/60 bg-secondary/40 text-foreground hover:bg-secondary/70 hover:text-primary" />
-                <Separator orientation="vertical" className="hidden h-8 bg-border/60 sm:block" />
-                <div className="min-w-0">
-                  <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-                    Executive dashboard
-                  </p>
-                  <h1 className="truncate font-['Didot','Bodoni_72','Times_New_Roman',serif] text-2xl font-medium tracking-[-0.05em] text-foreground sm:text-3xl">
-                    Good to see you, {userName}
-                  </h1>
-                </div>
+          {/* Top Row: Stats + Right Column */}
+          <div className="grid grid-cols-12 gap-6">
+            {/* Left Column (8/12) */}
+            <section className="col-span-12 space-y-6">
+              {/* Stat Cards */}
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                <StatCard
+                  icon={BookOpen}
+                  label="Total Books"
+                  value="12,856"
+                  sub="In collection"
+                  change="+120"
+                  changeType="up"
+                />
+                <StatCard
+                  icon={Users}
+                  label="Active Members"
+                  value="2,170+"
+                  sub="This month"
+                  change="+3.7%"
+                  changeType="up"
+                />
+                <StatCard
+                  icon={BookOpen}
+                  label="Borrowed Books"
+                  value="4,793+"
+                  sub="Books borrowed"
+                  change="+25%"
+                  changeType="up"
+                />
+                <StatCard
+                  icon={Clock}
+                  label="Overdue Returns"
+                  value="237+"
+                  sub="Item overdue"
+                  change="-5.8%"
+                  changeType="down"
+                />
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <ModeToggle />
-                <Badge className="border border-border/60 bg-secondary/40 px-3 py-1 text-primary hover:bg-secondary/70">
-                  <ShieldCheck />
-                  Session live
-                </Badge>
-                <div className="flex items-center gap-3 rounded-2xl border border-border/60 bg-background/35 px-3 py-2">
-                  <Avatar size="lg" className="bg-primary/10 text-primary">
-                    <AvatarFallback className="bg-primary/10 font-semibold text-primary">{userInitials}</AvatarFallback>
-                    <AvatarBadge className="bg-primary" />
-                  </Avatar>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-foreground">{userName}</p>
-                    <p className="truncate text-xs text-muted-foreground">{session.user.email || "No email on file"}</p>
-                  </div>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={handleSignOut}
-                  disabled={isSigningOut}
-                  aria-busy={isSigningOut}
-                  className="h-11 rounded-xl border-border/60 bg-secondary/40 font-[ui-monospace,Menlo,monospace] text-xs uppercase tracking-[0.18em] text-secondary-foreground hover:bg-secondary/70 hover:text-primary"
-                >
-                  {isSigningOut ? (
-                    <Loader2 className="animate-spin" data-icon="inline-start" />
-                  ) : (
-                    <LogOut data-icon="inline-start" />
-                  )}
-                  {isSigningOut ? "Signing out" : "Logout"}
-                </Button>
-                <span className="sr-only" aria-live="polite">
-                  {isSigningOut ? "Signing out" : ""}
-                </span>
-              </div>
-            </header>
-
-            {signOutError ? (
-              <div
-                role="alert"
-                className="rounded-2xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive"
-              >
-                {signOutError}
-              </div>
-            ) : null}
-
-            <section className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(340px,0.55fr)]">
-              <Card className="relative overflow-hidden rounded-[2rem] border-border/60 bg-card/75 py-0 text-card-foreground shadow-2xl backdrop-blur-2xl">
-                <div className="absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-primary/80 to-transparent" />
-                <CardHeader className="gap-6 p-6 lg:p-8">
-                  <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="max-w-3xl space-y-4">
-                      <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
-                        <Sparkles />
-                        Q4 growth plan
-                      </Badge>
-                      <CardTitle className="font-['Didot','Bodoni_72','Times_New_Roman',serif] text-4xl font-medium leading-[0.95] tracking-[-0.07em] text-card-foreground sm:text-6xl">
-                        Scale revenue without losing operational texture.
-                      </CardTitle>
-                      <CardDescription className="max-w-2xl text-base leading-8 text-muted-foreground">
-                        A focused cockpit for customer health, commercial motion, and account risk. Your authenticated
-                        workspace is ready.
-                      </CardDescription>
-                    </div>
-                    <div className="rounded-[1.5rem] border border-border/60 bg-background/35 p-4">
-                      <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.26em] text-muted-foreground">
-                        Net retention
-                      </p>
-                      <p className="mt-2 text-4xl font-semibold tracking-[-0.06em] text-card-foreground">118%</p>
-                      <div className="mt-4 flex items-center gap-2 text-sm text-primary">
-                        <TrendingUp />
-                        4.8 point lift
-                      </div>
-                    </div>
-                  </div>
+              {/* Revenue Breakdown */}
+              <Card className="rounded-2xl border-border">
+                <CardHeader className="flex flex-row items-center justify-between pb-0">
+                  <CardTitle className="text-base font-semibold">Revenue Breakdown</CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1 rounded-full border border-border bg-muted/60 text-xs text-muted-foreground"
+                  >
+                    This week <ChevronDown size={12} />
+                  </Button>
                 </CardHeader>
-
-                <CardContent className="space-y-6 p-6 pt-0 lg:p-8 lg:pt-0">
-                  <div className="grid gap-4 md:grid-cols-3">
-                    {metrics.map((metric) => (
-                      <Card
-                        key={metric.label}
-                        className="rounded-[1.5rem] border-border/60 bg-background/35 py-0 text-card-foreground"
-                      >
-                        <CardContent className="p-5">
-                          <div className="flex items-center justify-between gap-4">
-                            <div className="rounded-xl border border-primary/25 bg-primary/10 p-2 text-primary">
-                              <metric.icon />
-                            </div>
-                            <Badge variant="outline" className="border-border/60 bg-secondary/40 text-primary">
-                              {metric.change}
-                            </Badge>
-                          </div>
-                          <p className="mt-5 text-3xl font-semibold tracking-[-0.05em] text-card-foreground">
-                            {metric.value}
-                          </p>
-                          <p className="mt-2 text-sm text-muted-foreground">{metric.label}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
+                <CardContent className="pt-0">
+                  <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+                    Total <span className="text-foreground">&rarr;</span>
+                    <span className="text-2xl font-bold text-foreground">$20,671</span>
                   </div>
-
-                  <div className="grid gap-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(280px,0.55fr)]">
-                    <div className="rounded-[1.75rem] border border-border/60 bg-background/35 p-5 text-card-foreground">
-                      <div className="flex items-center justify-between gap-4">
-                        <div>
-                          <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                            Revenue curve
-                          </p>
-                          <h2 className="mt-2 text-2xl font-semibold tracking-[-0.04em]">Forecast quality</h2>
-                        </div>
-                        <Badge className="bg-secondary/40 text-primary hover:bg-secondary/70">
-                          <BarChart3 />
-                          Clean
-                        </Badge>
-                      </div>
-                      <div className="mt-8 grid h-56 grid-cols-12 items-end gap-2 rounded-2xl border border-border/60 bg-background/35 p-4">
-                        {[36, 44, 41, 58, 53, 68, 64, 72, 79, 74, 86, 92].map((height, index) => (
-                          <div
-                            key={height}
-                            className={cn("rounded-t-lg bg-primary/65 shadow-xl", index > 8 && "bg-primary")}
-                            style={{ height: `${height}%` }}
-                          />
-                        ))}
-                      </div>
+                  <div className="relative mt-4 h-72">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={REVENUE_DATA} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="var(--chart-1)" stopOpacity={0.45} />
+                            <stop offset="100%" stopColor="var(--chart-1)" stopOpacity={0.02} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                        <XAxis
+                          dataKey="label"
+                          tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          tick={{ fontSize: 10, fill: "var(--muted-foreground)" }}
+                          tickFormatter={(v: number) => `$${v / 1000}K`}
+                          domain={[0, 10000]}
+                          ticks={[0, 2000, 4000, 6000, 8000, 10000]}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <RechartsTooltip
+                          formatter={(value: number) => [`$${Number(value).toLocaleString()}`, "Revenue"]}
+                        />
+                        <Area
+                          type="linear"
+                          dataKey="value"
+                          stroke="var(--chart-1)"
+                          strokeWidth={2}
+                          fill="url(#revenueGradient)"
+                          dot={false}
+                          activeDot={{ r: 4, fill: "var(--chart-1)" }}
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                    <div className="pointer-events-none absolute left-1/2 top-10 -translate-x-1/2 rounded-lg bg-chart-1 px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow-lg">
+                      <div className="text-[10px] font-medium opacity-80">Revenue</div>
+                      <div className="text-sm font-bold">$4,910</div>
                     </div>
-
-                    <div className="space-y-3">
-                      <InfoRow icon={UserRound} label="Operator" value={userName} />
-                      <InfoRow icon={Fingerprint} label="Email" value={session.user.email || "Not available"} />
-                      <InfoRow icon={Clock3} label="Session expires" value={formatDate(session.session.expiresAt)} />
-                      <InfoRow icon={KeyRound} label="User ID" value={session.user.id || "Not available"} />
+                    <div className="pointer-events-none absolute bottom-14 left-1/2 flex -translate-x-1/2 items-center gap-2 rounded-md bg-foreground px-2 py-1 text-[11px] text-background">
+                      <span>26% of Total</span>
+                      <span className="flex items-center gap-0.5 text-success">
+                        <TrendingUp size={12} /> +3.7%
+                      </span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <aside className="grid gap-5">
-                <Card className="rounded-[2rem] border-border/60 bg-card/75 py-0 text-card-foreground shadow-2xl backdrop-blur-2xl">
-                  <CardHeader className="p-6">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="rounded-xl border border-primary/25 bg-primary/10 p-2 text-primary">
-                        <ShieldCheck />
-                      </div>
-                      <Badge variant="outline" className="border-border/60 bg-secondary/40 text-primary">
-                        Verified
-                      </Badge>
-                    </div>
-                    <CardTitle className="font-['Didot','Bodoni_72','Times_New_Roman',serif] text-3xl font-medium tracking-[-0.05em] text-card-foreground">
-                      Account posture is clear.
-                    </CardTitle>
-                    <CardDescription className="leading-7 text-muted-foreground">
-                      This browser session is active. Use logout to invalidate it before switching operators or leaving
-                      a shared device.
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-
-                <Card className="rounded-[2rem] border-border/60 bg-card/75 py-0 text-card-foreground shadow-2xl backdrop-blur-2xl">
-                  <CardContent className="space-y-5 p-6">
-                    <div className="flex items-center gap-3">
-                      <div className="rounded-xl border border-primary/25 bg-primary/10 p-2 text-primary">
-                        <PanelTop />
-                      </div>
-                      <div>
-                        <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.28em] text-muted-foreground">
-                          Today
-                        </p>
-                        <h2 className="text-xl font-semibold tracking-[-0.04em]">Operating notes</h2>
-                      </div>
-                    </div>
-                    <Separator className="bg-border/60" />
-                    {activityItems.map((item) => (
-                      <div key={item} className="flex items-start gap-3">
-                        <CheckCircle2 className="mt-1 text-primary" />
-                        <p className="text-sm leading-6 text-muted-foreground">{item}</p>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </aside>
+              {/* Overdue Table */}
+              <Card className="rounded-2xl border-border">
+                <CardHeader className="flex flex-row items-center justify-between pb-0">
+                  <CardTitle className="text-base font-semibold">Overdue Items Summary</CardTitle>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-1 rounded-full border border-border bg-muted/60 text-xs text-muted-foreground"
+                  >
+                    This week <ChevronDown size={12} />
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="text-xs text-muted-foreground">
+                          <th className="py-2 text-left font-medium">Borrower ⇅</th>
+                          <th className="py-2 text-left font-medium">Book Info ⇅</th>
+                          <th className="py-2 text-left font-medium">Days O/D ⇅</th>
+                          <th className="py-2 text-left font-medium">Fine ⇅</th>
+                          <th className="py-2 text-left font-medium">Action ⇅</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {OVERDUE_ITEMS.map((item) => (
+                          <tr key={item.id} className="border-t border-border">
+                            <td className="py-3">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className="grid size-10 place-items-center rounded-full text-sm font-semibold text-primary-foreground"
+                                  style={{ background: item.color }}
+                                >
+                                  {item.initial}
+                                </div>
+                                <div>
+                                  <div className="font-semibold">{item.name}</div>
+                                  <div className="text-xs text-muted-foreground">ID: {item.id}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-3">
+                              <div className="flex items-center gap-3">
+                                <div className="h-12 w-10 rounded-md border border-border bg-gradient-to-br from-accent to-muted" />
+                                <div>
+                                  <div className="font-semibold">{item.book}</div>
+                                  <div className="text-xs text-muted-foreground">{item.author}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="py-3 font-medium">{String(item.days).padStart(2, "0")} Days</td>
+                            <td className="py-3 font-medium">${item.fine}</td>
+                            <td className="py-3">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-full border-border text-xs font-semibold hover:bg-muted"
+                              >
+                                Notify
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
             </section>
           </div>
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
-  );
-}
-
-function InfoRow({ icon: Icon, label, value }: { icon: typeof UserRound; label: string; value: string }) {
-  return (
-    <div className="rounded-2xl border border-border/60 bg-background/35 p-4">
-      <div className="mb-3 flex items-center gap-2 text-primary">
-        <Icon />
-        <span className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-          {label}
-        </span>
-      </div>
-      <p className="break-words text-sm leading-6 text-card-foreground">{value}</p>
+        </div>
+      </main>
     </div>
   );
 }
 
-function DashboardAtmosphere() {
+// ---------------------------------------------------------------------------
+// Sub-components
+// ---------------------------------------------------------------------------
+
+function NavSection({
+  title,
+  visible,
+  items,
+  onAction,
+}: {
+  title: string;
+  visible: boolean;
+  items: { label: string; icon: React.ComponentType<{ size?: number }>; active?: boolean; action?: string }[];
+  onAction?: (action: string) => void;
+}) {
   return (
-    <div className="pointer-events-none fixed inset-0 overflow-hidden">
-      {/* Dashboard shares the auth atmosphere so the protected app feels like the same Lumina command surface. */}
-      <div className="home-atmosphere absolute inset-0" />
-      <div className="home-grid-overlay absolute inset-0" />
-      <div className="home-noise-overlay absolute inset-0 opacity-[0.035] mix-blend-multiply dark:opacity-5 dark:mix-blend-screen" />
-      <div className="absolute left-1/2 top-0 h-px w-[70vw] -translate-x-1/2 bg-linear-to-r from-transparent via-primary/70 to-transparent" />
+    <div className="mt-6 first:mt-0">
+      <div
+        className={`mb-3 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground px-2 ${
+          visible ? "" : "lg:hidden"
+        }`}
+      >
+        {title}
+      </div>
+      <nav className="space-y-1">
+        {items.map((item) => (
+          <Tooltip key={item.label}>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                onClick={() => item.action && onAction?.(item.action)}
+                className={`flex w-full items-center gap-3 rounded-lg px-3 h-10 text-sm font-medium transition-colors ${
+                  visible ? "" : "lg:size-10 lg:justify-center lg:p-0 lg:gap-0"
+                } ${item.active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted"}`}
+              >
+                <item.icon size={18} />
+                <span className={visible ? "" : "lg:hidden"}>{item.label}</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="right" align="center" hidden={visible}>
+              {item.label}
+            </TooltipContent>
+          </Tooltip>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  sub,
+  change,
+  changeType,
+}: {
+  icon: React.ComponentType<{ size?: number }>;
+  label: string;
+  value: string;
+  sub: string;
+  change: string;
+  changeType: "up" | "down";
+}) {
+  return (
+    <div className="rounded-2xl border border-border bg-card p-5">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <div className="grid size-9 place-items-center rounded-xl bg-primary/15 text-primary">
+          <Icon size={18} />
+        </div>
+        <span className="text-sm font-medium">{label}</span>
+      </div>
+      <div className="mt-4 flex items-end justify-between gap-3">
+        <div>
+          <div className="text-3xl font-bold tracking-tight">{value}</div>
+          <div className="mt-1 text-xs text-muted-foreground">{sub}</div>
+        </div>
+        <div className="text-right">
+          <div
+            className={`inline-flex items-center gap-1 text-sm font-semibold ${
+              changeType === "up" ? "text-success" : "text-danger"
+            }`}
+          >
+            {changeType === "up" ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+            {change}
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground">Since last month</div>
+        </div>
+      </div>
     </div>
   );
 }

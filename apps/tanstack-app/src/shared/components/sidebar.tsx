@@ -1,5 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip";
-import { ChevronLeft, Library } from "lucide-react";
+import { ArrowLeftToLine, ArrowRightToLine, Library } from "lucide-react";
 import { NAV_MAIN, NAV_MANAGEMENT, NAV_SETTINGS } from "./nav-data";
 import { NavSection } from "./nav-section";
 
@@ -48,7 +48,7 @@ export function Sidebar({ sidebarOpen, onToggle }: SidebarProps) {
             onClick={onToggle}
             className="flex w-full items-center justify-center rounded-lg h-10 bg-muted text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
           >
-            <ChevronLeft size={18} className={sidebarOpen ? "" : "rotate-180"} />
+            {sidebarOpen ? <ArrowLeftToLine size={18} /> : <ArrowRightToLine size={18} />}
           </button>
         </div>
       </aside>

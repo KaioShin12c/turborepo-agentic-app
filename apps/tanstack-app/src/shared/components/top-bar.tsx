@@ -39,10 +39,10 @@ export function TopBar({ session, onSignOut }: TopBarProps) {
       <div className="flex-1" />
 
       <div className="flex items-center gap-2">
-        <div className="relative w-64">
+        <div className="relative w-40">
           <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="type here to search anything"
+            placeholder="Search..."
             className="h-9 rounded-lg border-border bg-muted/60 pl-10 pr-14 text-sm outline-none"
           />
           <kbd className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 rounded-md border border-border bg-background px-2 py-1 text-xs text-muted-foreground">

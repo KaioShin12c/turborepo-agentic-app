@@ -13,24 +13,31 @@ turborepo-agentic-app/
 │       │   ├── router.tsx                  # Router creation + type registration
 │       │   ├── routeTree.gen.ts            # AUTO-GENERATED — do not edit
 │       │   ├── styles.css                  # App-specific CSS (atmosphere, animations)
-│       │   ├── routes/                     # File-based routes (TanStack Router)
+│       │   ├── routes/                     # File-based routes (thin adapters → features/)
 │       │   │   ├── __root.tsx              # Root shell: <html>, theme provider, meta, devtools
-│       │   │   ├── index.tsx               # "/" — Landing page
-│       │   │   ├── login.tsx               # "/login" — beforeLoad: redirect if logged in
-│       │   │   ├── signup.tsx              # "/signup"
-│       │   │   ├── dashboard.tsx           # "/dashboard" — beforeLoad: redirect if not logged in
+│       │   │   ├── index.tsx               # "/" — Landing page → features/landing
+│       │   │   ├── login.tsx               # "/login" — beforeLoad: redirect if logged in → features/auth
+│       │   │   ├── signup.tsx              # "/signup" → features/auth
+│       │   │   ├── dashboard.tsx           # "/dashboard" — beforeLoad: redirect if not logged in → features/dashboard
 │       │   │   └── api/auth/$.ts           # Catch-all Better Auth API proxy
-│       │   ├── components/                 # Page-level components (1 per route)
-│       │   │   ├── login-page.tsx          # Login form (email, password, GitHub OAuth)
-│       │   │   ├── signup-page.tsx         # Signup form
-│       │   │   ├── dashboard-page.tsx      # Dashboard with sidebar, metrics, session info
-│       │   │   ├── not-found-page.tsx      # 404 page
-│       │   │   ├── password-input.tsx      # Password input with show/hide toggle
-│       │   │   ├── theme-provider.tsx      # Dark/light/system theme context + inline script
-│       │   │   └── mode-toggle.tsx         # Theme toggle dropdown (sun/moon icons)
-│       │   ├── hooks/                      # App-specific hooks (currently empty)
-│       │   ├── lib/
-│       │   │   ├── auth.functions.ts       # Server functions: getCurrentSession()
+│       │   ├── features/                   # Feature-based organization (co-located code)
+│       │   │   ├── auth/                   # Authentication feature
+│       │   │   │   ├── auth.functions.ts   # Server functions: getCurrentSession()
+│       │   │   │   └── components/
+│       │   │   │       ├── login-page.tsx  # Login form (email, password, GitHub OAuth)
+│       │   │   │       ├── signup-page.tsx # Signup form
+│       │   │   │       └── password-input.tsx # Password input with show/hide toggle
+│       │   │   ├── dashboard/              # Dashboard feature
+│       │   │   │   └── components/
+│       │   │   │       └── dashboard-page.tsx # Dashboard with sidebar, metrics, session info
+│       │   │   └── landing/               # Landing page feature
+│       │   │       └── components/
+│       │   │           └── landing-page.tsx  # Landing/home page
+│       │   ├── shared/                     # Shared code across features
+│       │   │   ├── components/
+│       │   │   │   ├── theme-provider.tsx  # Dark/light/system theme context + inline script
+│       │   │   │   ├── mode-toggle.tsx     # Theme toggle dropdown (sun/moon icons)
+│       │   │   │   └── not-found-page.tsx  # 404 page
 │       │   │   └── utils.test.ts           # Vitest smoke test
 │       │   └── vitest.setup.ts             # @testing-library/jest-dom setup
 │       ├── vitest.config.ts                # Vitest config (react preset + #/* alias)

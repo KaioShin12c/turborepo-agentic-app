@@ -21,7 +21,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "../../../shared/components/mode-toggle";
 import { PasswordInput } from "./password-input";
 
 const signupSchema = z

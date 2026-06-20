@@ -1,8 +1,8 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import NotFoundPage from "../components/not-found-page";
-import { ThemeProvider } from "../components/theme-provider";
+import NotFoundPage from "../shared/components/not-found-page";
+import { ThemeProvider } from "../shared/components/theme-provider";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({

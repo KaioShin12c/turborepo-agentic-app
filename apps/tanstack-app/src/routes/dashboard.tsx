@@ -1,7 +1,6 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-
-import DashboardPage from "../components/dashboard-page";
-import { getCurrentSession } from "../lib/auth.functions";
+import { getCurrentSession } from "../features/auth/auth.functions";
+import DashboardPage from "../features/dashboard/components/dashboard-page";
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {

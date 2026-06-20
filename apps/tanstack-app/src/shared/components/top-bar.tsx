@@ -1,13 +1,34 @@
-import { Button } from "@repo/ui/components/ui/button";
+import type { AuthSession } from "@repo/auth/server";
+import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar";
+import { Badge } from "@repo/ui/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@repo/ui/components/ui/dropdown-menu";
 import { Input } from "@repo/ui/components/ui/input";
-import { Bell, Globe, Search, UserPlus } from "lucide-react";
+import { Bell, ChevronDown, Globe, LogOut, Search, Settings, User } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 
 interface TopBarProps {
-  userName: string;
+  session: AuthSession;
+  onSignOut?: () => void;
 }
 
-export function TopBar({ userName }: TopBarProps) {
+export function TopBar({ session, onSignOut }: TopBarProps) {
+  const user = session?.user;
+  const userName = user?.name || "User";
+  const userEmail = user?.email || "";
+  const userImage = user?.image || "";
+  const initials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
   return (
     <header className="flex items-center gap-4 border-b border-border bg-background px-6 h-[72px] shrink-0">
       <div className="shrink-0">
@@ -42,10 +63,56 @@ export function TopBar({ userName }: TopBarProps) {
         >
           <Bell size={18} />
         </button>
-        <Button className="h-10 gap-2 rounded-2xl px-5 text-sm font-semibold">
-          <UserPlus size={16} />
-          Add Member
-        </Button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              className="flex items-center gap-2.5 rounded-2xl px-2.5 py-1.5 text-sm hover:bg-muted/60 transition-colors"
+            >
+              <Avatar size="sm">
+                <AvatarImage src={userImage} alt={userName} />
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-start min-w-0">
+                <span className="text-sm font-medium leading-tight truncate max-w-[120px]">{userName}</span>
+                <span className="text-xs text-muted-foreground leading-tight truncate max-w-[120px]">{userEmail}</span>
+              </div>
+              <ChevronDown size={14} className="text-muted-foreground shrink-0" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" sideOffset={8} className="w-56">
+            <div className="flex items-center gap-3 px-2 py-2.5">
+              <Avatar size="lg">
+                <AvatarImage src={userImage} alt={userName} />
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col min-w-0">
+                <span className="text-sm font-semibold truncate">{userName}</span>
+                <span className="text-xs text-muted-foreground truncate">{userEmail}</span>
+                <Badge variant="secondary" className="mt-1 w-fit text-[10px] px-1.5 py-0">
+                  Member
+                </Badge>
+              </div>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer">
+              <User size={16} />
+              View Profile
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Settings size={16} />
+              Settings
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {onSignOut && (
+              <DropdownMenuItem variant="destructive" onClick={onSignOut} className="cursor-pointer">
+                <LogOut size={16} />
+                Sign out
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

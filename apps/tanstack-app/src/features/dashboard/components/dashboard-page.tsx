@@ -17,8 +17,6 @@ export default function DashboardPage({ session }: DashboardPageProps) {
   const [signOutError, setSignOutError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const userName = session?.user?.name || "James";
-
   const handleSignOut = async () => {
     setSignOutError(null);
     setIsSigningOut(true);
@@ -41,7 +39,7 @@ export default function DashboardPage({ session }: DashboardPageProps) {
       <Sidebar sidebarOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} onSignOut={handleSignOut} />
 
       <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <TopBar userName={userName} />
+        <TopBar session={session} onSignOut={handleSignOut} />
 
         <div className="flex-1 overflow-auto p-6 space-y-6">
           {signOutError && (

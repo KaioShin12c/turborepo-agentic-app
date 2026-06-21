@@ -33,4 +33,4 @@ graph TD
 - [x] [task-02-wire-up-onedit](./tasks/task-02-wire-up-onedit.md) — Wire up onEdit callback in BooksPage
 
 ### Wave 2
-- [ ] [task-03-edit-page-route](./tasks/task-03-edit-page-route.md) — Create the /books/$id/edit route
+- [x] [task-03-edit-page-route](./tasks/task-03-edit-page-route.md) — Create the /books/$id/edit route

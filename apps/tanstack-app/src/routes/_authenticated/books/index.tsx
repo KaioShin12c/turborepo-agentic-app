@@ -64,6 +64,10 @@ function BooksPage() {
     setPage(1);
   };
 
+  const handleEdit = (book: Book) => {
+    router.navigate({ to: "/books/$id/edit", params: { id: book.id } });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -91,7 +95,7 @@ function BooksPage() {
         onReset={resetFilters}
       />
 
-      <BooksTable books={paged} onDelete={handleDelete} />
+      <BooksTable books={paged} onDelete={handleDelete} onEdit={handleEdit} />
 
       <BooksPagination
         page={page}

@@ -33,4 +33,4 @@ graph TD
 - [x] [task-02-wire-up-onview](./tasks/task-02-wire-up-onview.md) — Wire up onView callback in BooksPage
 
 ### Wave 2
-- [ ] [task-03-detail-page-route](./tasks/task-03-detail-page-route.md) — Create the /books/$id route
+- [x] [task-03-detail-page-route](./tasks/task-03-detail-page-route.md) — Create the /books/$id route

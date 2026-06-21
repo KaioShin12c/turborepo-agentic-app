@@ -1,3 +1,4 @@
+import { AlertDialog } from "@repo/ui/components/ui/alert-dialog";
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@repo/ui/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/ui/table";
 import { Eye, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 import type { Book } from "#/features/books/types";
 
 function statusBadge(status: Book["status"]) {
@@ -43,79 +45,105 @@ function TitleCell({ book }: { book: Book }) {
 }
 
 export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps) {
+  const [deleteTarget, setDeleteTarget] = useState<Book | null>(null);
+
   return (
-    <div className="rounded-lg border border-border shadow-sm overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow className="bg-muted/40 hover:bg-muted/40 [&_th]:h-11 [&_th]:px-4 [&_th]:text-xs [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
-            <TableHead className="w-[100px]">Book ID</TableHead>
-            <TableHead>Title & Author</TableHead>
-            <TableHead className="hidden lg:table-cell">ISBN</TableHead>
-            <TableHead className="hidden md:table-cell">Category</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="hidden xl:table-cell">Location</TableHead>
-            <TableHead className="hidden sm:table-cell">Language</TableHead>
-            <TableHead className="text-right">Borrowed</TableHead>
-            <TableHead className="w-[60px] text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {books.map((book, i) => (
-            <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
-              <TableCell className="px-4 text-xs font-mono text-muted-foreground">{book.id}</TableCell>
-              <TableCell className="px-4">
-                <TitleCell book={book} />
-              </TableCell>
-              <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden lg:table-cell">
-                {book.isbn}
-              </TableCell>
-              <TableCell className="px-4 hidden md:table-cell">
-                <Badge variant="secondary" className="font-medium">
-                  {book.category}
-                </Badge>
-              </TableCell>
-              <TableCell className="px-4">
-                <Badge variant="outline" className={statusBadge(book.status)}>
-                  {book.status}
-                </Badge>
-              </TableCell>
-              <TableCell className="px-4 text-xs font-medium text-muted-foreground hidden xl:table-cell">
-                {book.location}
-              </TableCell>
-              <TableCell className="px-4 hidden sm:table-cell text-xs font-medium text-muted-foreground">
-                {book.language}
-              </TableCell>
-              <TableCell className="px-4 text-right text-sm font-semibold tabular-nums">
-                {book.timesBorrowed.toLocaleString()}
-              </TableCell>
-              <TableCell className="px-2 text-right">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-xs" className="size-8">
-                      <MoreHorizontal className="size-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" sideOffset={4} className="w-40">
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => onView?.(book)}>
-                      <Eye className="size-4" />
-                      View Details
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => onEdit?.(book)}>
-                      <Pencil className="size-4" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem variant="destructive" className="cursor-pointer" onClick={() => onDelete?.(book)}>
-                      <Trash2 className="size-4" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+    <>
+      <div className="rounded-lg border border-border shadow-sm overflow-hidden">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/40 hover:bg-muted/40 [&_th]:h-11 [&_th]:px-4 [&_th]:text-xs [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
+              <TableHead className="w-[100px]">Book ID</TableHead>
+              <TableHead>Title & Author</TableHead>
+              <TableHead className="hidden lg:table-cell">ISBN</TableHead>
+              <TableHead className="hidden md:table-cell">Category</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="hidden xl:table-cell">Location</TableHead>
+              <TableHead className="hidden sm:table-cell">Language</TableHead>
+              <TableHead className="text-right">Borrowed</TableHead>
+              <TableHead className="w-[60px] text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {books.map((book, i) => (
+              <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
+                <TableCell className="px-4 text-xs font-mono text-muted-foreground">{book.id}</TableCell>
+                <TableCell className="px-4">
+                  <TitleCell book={book} />
+                </TableCell>
+                <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden lg:table-cell">
+                  {book.isbn}
+                </TableCell>
+                <TableCell className="px-4 hidden md:table-cell">
+                  <Badge variant="secondary" className="font-medium">
+                    {book.category}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-4">
+                  <Badge variant="outline" className={statusBadge(book.status)}>
+                    {book.status}
+                  </Badge>
+                </TableCell>
+                <TableCell className="px-4 text-xs font-medium text-muted-foreground hidden xl:table-cell">
+                  {book.location}
+                </TableCell>
+                <TableCell className="px-4 hidden sm:table-cell text-xs font-medium text-muted-foreground">
+                  {book.language}
+                </TableCell>
+                <TableCell className="px-4 text-right text-sm font-semibold tabular-nums">
+                  {book.timesBorrowed.toLocaleString()}
+                </TableCell>
+                <TableCell className="px-2 text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon-xs" className="size-8">
+                        <MoreHorizontal className="size-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" sideOffset={4} className="w-40">
+                      <DropdownMenuItem className="cursor-pointer" onClick={() => onView?.(book)}>
+                        <Eye className="size-4" />
+                        View Details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="cursor-pointer" onClick={() => onEdit?.(book)}>
+                        <Pencil className="size-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant="destructive"
+                        className="cursor-pointer"
+                        onClick={() => setDeleteTarget(book)}
+                      >
+                        <Trash2 className="size-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <AlertDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        title="Delete Book"
+        description={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        variant="destructive"
+        onConfirm={() => {
+          if (deleteTarget) {
+            onDelete?.(deleteTarget);
+            setDeleteTarget(null);
+          }
+        }}
+      />
+    </>
   );
 }

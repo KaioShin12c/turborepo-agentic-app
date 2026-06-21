@@ -6,6 +6,7 @@ import { BooksFilters } from "#/features/books/components/books-filters";
 import { BooksPagination } from "#/features/books/components/books-pagination";
 import { BooksTable } from "#/features/books/components/books-table";
 import { BOOKS } from "#/features/books/data";
+import type { Book } from "#/features/books/types";
 
 export const Route = createFileRoute("/_authenticated/books/")({
   component: BooksPage,
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/_authenticated/books/")({
 
 function BooksPage() {
   const router = useRouter();
+  const [books, setBooks] = useState<Book[]>(BOOKS);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
@@ -21,7 +23,7 @@ function BooksPage() {
   const [perPage, setPerPage] = useState(8);
 
   const filtered = useMemo(() => {
-    return BOOKS.filter((b) => {
+    return books.filter((b) => {
       if (
         search &&
         !b.title.toLowerCase().includes(search.toLowerCase()) &&
@@ -33,7 +35,7 @@ function BooksPage() {
       if (language !== "all" && b.language !== language) return false;
       return true;
     });
-  }, [search, category, status, language]);
+  }, [books, search, category, status, language]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
   const safePage = Math.min(page, totalPages);
@@ -54,6 +56,11 @@ function BooksPage() {
 
   const handlePerPageChange = (n: number) => {
     setPerPage(n);
+    setPage(1);
+  };
+
+  const handleDelete = (book: Book) => {
+    setBooks((prev) => prev.filter((b) => b.id !== book.id));
     setPage(1);
   };
 
@@ -84,7 +91,7 @@ function BooksPage() {
         onReset={resetFilters}
       />
 
-      <BooksTable books={paged} />
+      <BooksTable books={paged} onDelete={handleDelete} />
 
       <BooksPagination
         page={page}

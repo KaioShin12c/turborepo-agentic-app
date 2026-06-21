@@ -1,6 +1,7 @@
 import { AlertDialog } from "@repo/ui/components/ui/alert-dialog";
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
+import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +26,9 @@ function statusBadge(status: Book["status"]) {
 
 interface BooksTableProps {
   books: Book[];
+  selectedIds?: Set<string>;
+  onToggleSelect?: (id: string) => void;
+  onToggleSelectAll?: () => void;
   onView?: (book: Book) => void;
   onEdit?: (book: Book) => void;
   onDelete?: (book: Book) => void;
@@ -44,8 +48,18 @@ function TitleCell({ book }: { book: Book }) {
   );
 }
 
-export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps) {
+export function BooksTable({
+  books,
+  selectedIds = new Set(),
+  onToggleSelect = () => {},
+  onToggleSelectAll = () => {},
+  onView,
+  onEdit,
+  onDelete,
+}: BooksTableProps) {
   const [deleteTarget, setDeleteTarget] = useState<Book | null>(null);
+  const allSelected = books.length > 0 && books.every((b) => selectedIds.has(b.id));
+  const someSelected = books.some((b) => selectedIds.has(b.id)) && !allSelected;
 
   return (
     <>
@@ -53,6 +67,14 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40 [&_th]:h-11 [&_th]:px-4 [&_th]:text-xs [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
+              <TableHead className="w-[40px]">
+                <Checkbox
+                  checked={allSelected}
+                  data-state={someSelected ? "indeterminate" : allSelected ? "checked" : "unchecked"}
+                  onCheckedChange={() => onToggleSelectAll()}
+                  aria-label="Select all"
+                />
+              </TableHead>
               <TableHead className="w-[100px] hidden sm:table-cell">Book ID</TableHead>
               <TableHead>Title & Author</TableHead>
               <TableHead className="hidden lg:table-cell">ISBN</TableHead>
@@ -67,7 +89,7 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
           <TableBody>
             {books.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="h-32 text-center">
+                <TableCell colSpan={10} className="h-32 text-center">
                   <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
                     <p className="text-sm font-medium">No books found</p>
                     <p className="text-xs">Add a new book to get started.</p>
@@ -77,6 +99,13 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
             ) : (
               books.map((book, i) => (
                 <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
+                  <TableCell className="px-4">
+                    <Checkbox
+                      checked={selectedIds.has(book.id)}
+                      onCheckedChange={() => onToggleSelect(book.id)}
+                      aria-label={`Select ${book.title}`}
+                    />
+                  </TableCell>
                   <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden sm:table-cell">
                     {book.id}
                   </TableCell>

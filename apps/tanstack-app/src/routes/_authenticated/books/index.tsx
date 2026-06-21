@@ -1,7 +1,8 @@
+import { AlertDialog } from "@repo/ui/components/ui/alert-dialog";
 import { Button } from "@repo/ui/components/ui/button";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { BookPlus, ChevronDown } from "lucide-react";
-import { useMemo, useState } from "react";
+import { BookPlus, ChevronDown, Trash2 } from "lucide-react";
+import { useCallback, useMemo, useState } from "react";
 import { BooksFilters } from "#/features/books/components/books-filters";
 import { BooksPagination } from "#/features/books/components/books-pagination";
 import { BooksTable } from "#/features/books/components/books-table";
@@ -21,6 +22,8 @@ function BooksPage() {
   const [language, setLanguage] = useState("all");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(8);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false);
 
   const filtered = useMemo(() => {
     return books.filter((b) => {
@@ -64,6 +67,34 @@ function BooksPage() {
     setPage(1);
   };
 
+  const handleToggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleToggleSelectAll = useCallback(() => {
+    setSelectedIds((prev) => {
+      if (prev.size === paged.length) {
+        return new Set();
+      }
+      return new Set(paged.map((b) => b.id));
+    });
+  }, [paged]);
+
+  const handleBulkDelete = () => {
+    setBooks((prev) => prev.filter((b) => !selectedIds.has(b.id)));
+    setSelectedIds(new Set());
+    setBulkDeleteOpen(false);
+    setPage(1);
+  };
+
   const handleEdit = (book: Book) => {
     router.navigate({ to: "/books/$id/edit", params: { id: book.id } });
   };
@@ -77,6 +108,12 @@ function BooksPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold tracking-tight">Books Collection</h1>
         <div className="flex items-center gap-2">
+          {selectedIds.size > 0 && (
+            <Button variant="destructive" className="gap-1.5 text-sm" onClick={() => setBulkDeleteOpen(true)}>
+              <Trash2 size={14} />
+              Delete ({selectedIds.size})
+            </Button>
+          )}
           <Button variant="ghost" className="gap-1  border border-border bg-muted/60 text-sm text-muted-foreground">
             Export <ChevronDown size={14} />
           </Button>
@@ -99,7 +136,15 @@ function BooksPage() {
         onReset={resetFilters}
       />
 
-      <BooksTable books={paged} onDelete={handleDelete} onEdit={handleEdit} onView={handleView} />
+      <BooksTable
+        books={paged}
+        selectedIds={selectedIds}
+        onToggleSelect={handleToggleSelect}
+        onToggleSelectAll={handleToggleSelectAll}
+        onDelete={handleDelete}
+        onEdit={handleEdit}
+        onView={handleView}
+      />
 
       <BooksPagination
         page={page}
@@ -108,6 +153,17 @@ function BooksPage() {
         perPage={perPage}
         onPageChange={setPage}
         onPerPageChange={handlePerPageChange}
+      />
+
+      <AlertDialog
+        open={bulkDeleteOpen}
+        onOpenChange={setBulkDeleteOpen}
+        title="Delete Selected Books"
+        description={`Are you sure you want to delete ${selectedIds.size} selected book${selectedIds.size > 1 ? "s" : ""}? This action cannot be undone.`}
+        confirmLabel={`Delete ${selectedIds.size}`}
+        cancelLabel="Cancel"
+        variant="destructive"
+        onConfirm={handleBulkDelete}
       />
     </div>
   );

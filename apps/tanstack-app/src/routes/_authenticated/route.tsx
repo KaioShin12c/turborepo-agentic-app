@@ -55,7 +55,7 @@ function AuthenticatedLayout() {
         currentPath={currentPath}
         userName={session?.user?.name}
         userEmail={session?.user?.email}
-        userImage={session?.user?.image}
+        userImage={session?.user?.image || ""}
         onSignOut={handleSignOut}
       />
 

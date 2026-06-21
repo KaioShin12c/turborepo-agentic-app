@@ -44,7 +44,7 @@ export function PasswordInput({
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className="font-['Avenir_Next','Segoe_UI',sans-serif] text-foreground placeholder:text-muted-foreground"
+          className="font-sans text-foreground placeholder:text-muted-foreground"
           required={required}
           disabled={disabled}
           aria-invalid={error ? "true" : "false"}
@@ -65,7 +65,7 @@ export function PasswordInput({
         </InputGroupButton>
       </InputGroup>
       {error ? (
-        <p id={errorId} className="font-['Avenir_Next','Segoe_UI',sans-serif] text-sm text-destructive">
+        <p id={errorId} className="font-sans text-sm text-destructive">
           {error}
         </p>
       ) : null}

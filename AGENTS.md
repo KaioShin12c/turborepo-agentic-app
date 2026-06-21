@@ -18,6 +18,7 @@
 | Lint & Format  | Biome                                                      |
 | Testing        | Vitest + Testing Library (React + jsdom)                   |
 
+
 ## REPO REFERENCE
 
 - **Architecture**: `docs/architecture.md` — full tree structure, package descriptions, file locations. Consult this first when navigating the codebase.

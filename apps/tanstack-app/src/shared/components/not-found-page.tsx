@@ -37,7 +37,7 @@ export default function NotFoundPage() {
             <h1 className="max-w-2xl font-['Didot','Bodoni_72','Times_New_Roman',serif] text-6xl font-medium leading-[0.92] tracking-[-0.07em] text-foreground xl:text-7xl">
               This corridor is outside the archive.
             </h1>
-            <p className="max-w-xl font-['Avenir_Next','Segoe_UI',sans-serif] text-lg leading-8 text-muted-foreground">
+            <p className="max-w-xl font-sans text-lg leading-8 text-muted-foreground">
               The requested workspace route is unavailable, expired, or sealed behind another access channel.
             </p>
           </div>
@@ -58,9 +58,7 @@ export default function NotFoundPage() {
                     <p className="font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.34em] text-muted-foreground">
                       Route console
                     </p>
-                    <p className="font-['Avenir_Next','Segoe_UI',sans-serif] text-sm text-muted-foreground">
-                      lumina.os
-                    </p>
+                    <p className="font-sans text-sm text-muted-foreground">lumina.os</p>
                   </div>
                 </div>
                 <div className="rounded-full border border-border/60 bg-secondary/40 px-3 py-1 font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.22em] text-primary">
@@ -71,7 +69,7 @@ export default function NotFoundPage() {
                 <CardTitle className="font-['Didot','Bodoni_72','Times_New_Roman',serif] text-4xl font-medium leading-none tracking-[-0.05em] text-card-foreground">
                   Access point not found
                 </CardTitle>
-                <CardDescription className="font-['Avenir_Next','Segoe_UI',sans-serif] text-sm leading-6 text-muted-foreground">
+                <CardDescription className="font-sans text-sm leading-6 text-muted-foreground">
                   We could not resolve this private route. Return to a verified channel to continue.
                 </CardDescription>
               </div>

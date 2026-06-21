@@ -161,6 +161,72 @@ describe("BooksTable", () => {
     });
   });
 
+  describe("checkbox selection", () => {
+    it("renders a checkbox for each row", () => {
+      render(<BooksTable books={[book1, book2]} />);
+
+      const checkboxes = screen.getAllByRole("checkbox");
+      expect(checkboxes.length).toBe(3); // select-all + 2 rows
+    });
+
+    it("renders select-all checkbox with aria-label", () => {
+      render(<BooksTable books={[book1]} />);
+
+      expect(screen.getByLabelText("Select all")).toBeInTheDocument();
+    });
+
+    it("renders row checkbox with aria-label", () => {
+      render(<BooksTable books={[book1]} />);
+
+      expect(screen.getByLabelText("Select Test Book")).toBeInTheDocument();
+    });
+
+    it("calls onToggleSelect with book id when row checkbox is clicked", () => {
+      const onToggleSelect = vi.fn();
+      render(<BooksTable books={[book1]} onToggleSelect={onToggleSelect} />);
+
+      const rowCheckbox = screen.getByLabelText("Select Test Book");
+      fireEvent.click(rowCheckbox);
+
+      expect(onToggleSelect).toHaveBeenCalledTimes(1);
+      expect(onToggleSelect).toHaveBeenCalledWith("book-1");
+    });
+
+    it("calls onToggleSelectAll when select-all checkbox is clicked", () => {
+      const onToggleSelectAll = vi.fn();
+      render(<BooksTable books={[book1]} onToggleSelectAll={onToggleSelectAll} />);
+
+      const selectAll = screen.getByLabelText("Select all");
+      fireEvent.click(selectAll);
+
+      expect(onToggleSelectAll).toHaveBeenCalledTimes(1);
+    });
+
+    it("shows select-all as checked when all rows are selected", () => {
+      const selectedIds = new Set(["book-1", "book-2"]);
+      render(<BooksTable books={[book1, book2]} selectedIds={selectedIds} />);
+
+      const selectAll = screen.getByLabelText("Select all");
+      expect(selectAll).toHaveAttribute("data-state", "checked");
+    });
+
+    it("shows select-all as unchecked when no rows are selected", () => {
+      render(<BooksTable books={[book1, book2]} selectedIds={new Set()} />);
+
+      const selectAll = screen.getByLabelText("Select all");
+      expect(selectAll).toHaveAttribute("data-state", "unchecked");
+    });
+
+    it("calls onToggleSelect for the correct row when multiple rows exist", () => {
+      const onToggleSelect = vi.fn();
+      render(<BooksTable books={[book1, book2]} onToggleSelect={onToggleSelect} />);
+
+      fireEvent.click(screen.getByLabelText("Select Second Book"));
+
+      expect(onToggleSelect).toHaveBeenCalledWith("book-2");
+    });
+  });
+
   describe("delete confirmation dialog", () => {
     it("opens delete dialog when Delete is clicked", () => {
       render(<BooksTable books={[book1]} />);

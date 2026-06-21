@@ -12,9 +12,10 @@ interface NavSectionProps {
   visible: boolean;
   items: NavItem[];
   currentPath?: string;
+  onItemClick?: () => void;
 }
 
-export function NavSection({ title, visible, items, currentPath }: NavSectionProps) {
+export function NavSection({ title, visible, items, currentPath, onItemClick }: NavSectionProps) {
   return (
     <div className="mt-6 first:mt-0">
       <div
@@ -32,6 +33,7 @@ export function NavSection({ title, visible, items, currentPath }: NavSectionPro
               <TooltipTrigger asChild>
                 <Link
                   to={item.path}
+                  onClick={onItemClick}
                   className={`flex w-full items-center gap-3 rounded-lg px-3 h-10 text-sm font-medium transition-[width,height,padding,gap] duration-300 ${
                     visible ? "" : "lg:size-10 lg:p-0 lg:gap-0"
                   } ${active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted"}`}

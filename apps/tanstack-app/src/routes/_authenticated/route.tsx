@@ -2,6 +2,7 @@ import { authClient } from "@repo/auth/client";
 import { createFileRoute, Outlet, redirect, useRouter, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { getCurrentSession } from "../../features/auth/auth.functions";
+import { MobileNav } from "../../shared/components/mobile-nav";
 import { Sidebar } from "../../shared/components/sidebar";
 import { TopBar } from "../../shared/components/top-bar";
 
@@ -24,6 +25,7 @@ function AuthenticatedLayout() {
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
 
   const handleSignOut = async () => {
@@ -40,10 +42,25 @@ function AuthenticatedLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background font-sans text-foreground">
-      <Sidebar sidebarOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} currentPath={currentPath} />
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        currentPath={currentPath}
+        className="hidden lg:flex"
+      />
+
+      <MobileNav
+        open={mobileNavOpen}
+        onOpenChange={setMobileNavOpen}
+        currentPath={currentPath}
+        userName={session?.user?.name}
+        userEmail={session?.user?.email}
+        userImage={session?.user?.image}
+        onSignOut={handleSignOut}
+      />
 
       <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        <TopBar session={session} onSignOut={handleSignOut} />
+        <TopBar session={session} onSignOut={handleSignOut} onOpenMobileNav={() => setMobileNavOpen(true)} />
 
         <div className="flex-1 overflow-auto p-6 space-y-6">
           {signOutError && (

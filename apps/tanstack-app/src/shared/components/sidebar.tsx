@@ -7,15 +7,16 @@ interface SidebarProps {
   sidebarOpen: boolean;
   onToggle: () => void;
   currentPath?: string;
+  className?: string;
 }
 
-export function Sidebar({ sidebarOpen, onToggle, currentPath }: SidebarProps) {
+export function Sidebar({ sidebarOpen, onToggle, currentPath, className }: SidebarProps) {
   return (
     <TooltipProvider delayDuration={0}>
       <aside
         className={`flex h-full shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300 ${
           sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16"
-        }`}
+        } ${className ?? ""}`}
       >
         <div className="flex h-[72px] shrink-0 items-center border-b border-border px-3 overflow-hidden">
           <Tooltip>

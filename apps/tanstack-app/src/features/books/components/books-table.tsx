@@ -49,11 +49,11 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
 
   return (
     <>
-      <div className="rounded-lg border border-border shadow-sm overflow-hidden">
+      <div className="rounded-lg border border-border shadow-sm overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/40 hover:bg-muted/40 [&_th]:h-11 [&_th]:px-4 [&_th]:text-xs [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-wider [&_th]:text-muted-foreground">
-              <TableHead className="w-[100px]">Book ID</TableHead>
+              <TableHead className="w-[100px] hidden sm:table-cell">Book ID</TableHead>
               <TableHead>Title & Author</TableHead>
               <TableHead className="hidden lg:table-cell">ISBN</TableHead>
               <TableHead className="hidden md:table-cell">Category</TableHead>
@@ -77,7 +77,9 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
             ) : (
               books.map((book, i) => (
                 <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
-                  <TableCell className="px-4 text-xs font-mono text-muted-foreground">{book.id}</TableCell>
+                  <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden sm:table-cell">
+                    {book.id}
+                  </TableCell>
                   <TableCell className="px-4">
                     <TitleCell book={book} />
                   </TableCell>

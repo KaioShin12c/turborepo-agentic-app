@@ -20,6 +20,7 @@ import { Route as AuthenticatedBooksIndexRouteImport } from './routes/_authentic
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AuthenticatedBooksAddRouteImport } from './routes/_authenticated/books/add'
 import { Route as AuthenticatedBooksIdRouteImport } from './routes/_authenticated/books/$id'
+import { Route as AuthenticatedBooksIdIndexRouteImport } from './routes/_authenticated/books/$id/index'
 import { Route as AuthenticatedBooksIdEditRouteImport } from './routes/_authenticated/books/$id.edit'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -75,6 +76,12 @@ const AuthenticatedBooksIdRoute = AuthenticatedBooksIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => AuthenticatedBooksRoute,
 } as any)
+const AuthenticatedBooksIdIndexRoute =
+  AuthenticatedBooksIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedBooksIdRoute,
+  } as any)
 const AuthenticatedBooksIdEditRoute =
   AuthenticatedBooksIdEditRouteImport.update({
     id: '/edit',
@@ -93,17 +100,18 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/books/': typeof AuthenticatedBooksIndexRoute
   '/books/$id/edit': typeof AuthenticatedBooksIdEditRoute
+  '/books/$id/': typeof AuthenticatedBooksIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof AuthLoginRoute
   '/signup': typeof AuthSignupRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/books/$id': typeof AuthenticatedBooksIdRouteWithChildren
   '/books/add': typeof AuthenticatedBooksAddRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/books': typeof AuthenticatedBooksIndexRoute
   '/books/$id/edit': typeof AuthenticatedBooksIdEditRoute
+  '/books/$id': typeof AuthenticatedBooksIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -119,6 +127,7 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authenticated/books/': typeof AuthenticatedBooksIndexRoute
   '/_authenticated/books/$id/edit': typeof AuthenticatedBooksIdEditRoute
+  '/_authenticated/books/$id/': typeof AuthenticatedBooksIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -133,17 +142,18 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/books/'
     | '/books/$id/edit'
+    | '/books/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/signup'
     | '/dashboard'
-    | '/books/$id'
     | '/books/add'
     | '/api/auth/$'
     | '/books'
     | '/books/$id/edit'
+    | '/books/$id'
   id:
     | '__root__'
     | '/'
@@ -158,6 +168,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/_authenticated/books/'
     | '/_authenticated/books/$id/edit'
+    | '/_authenticated/books/$id/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -246,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBooksIdRouteImport
       parentRoute: typeof AuthenticatedBooksRoute
     }
+    '/_authenticated/books/$id/': {
+      id: '/_authenticated/books/$id/'
+      path: '/'
+      fullPath: '/books/$id/'
+      preLoaderRoute: typeof AuthenticatedBooksIdIndexRouteImport
+      parentRoute: typeof AuthenticatedBooksIdRoute
+    }
     '/_authenticated/books/$id/edit': {
       id: '/_authenticated/books/$id/edit'
       path: '/edit'
@@ -272,10 +290,12 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 
 interface AuthenticatedBooksIdRouteChildren {
   AuthenticatedBooksIdEditRoute: typeof AuthenticatedBooksIdEditRoute
+  AuthenticatedBooksIdIndexRoute: typeof AuthenticatedBooksIdIndexRoute
 }
 
 const AuthenticatedBooksIdRouteChildren: AuthenticatedBooksIdRouteChildren = {
   AuthenticatedBooksIdEditRoute: AuthenticatedBooksIdEditRoute,
+  AuthenticatedBooksIdIndexRoute: AuthenticatedBooksIdIndexRoute,
 }
 
 const AuthenticatedBooksIdRouteWithChildren =

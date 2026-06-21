@@ -6,13 +6,14 @@ import { NavSection } from "./nav-section";
 interface SidebarProps {
   sidebarOpen: boolean;
   onToggle: () => void;
+  currentPath?: string;
 }
 
-export function Sidebar({ sidebarOpen, onToggle }: SidebarProps) {
+export function Sidebar({ sidebarOpen, onToggle, currentPath }: SidebarProps) {
   return (
     <TooltipProvider delayDuration={0}>
       <aside
-        className={`flex h-full shrink-0 flex-col border-r border-border bg-card transition-all duration-300 ${
+        className={`flex h-full shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300 ${
           sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16"
         }`}
       >
@@ -28,7 +29,7 @@ export function Sidebar({ sidebarOpen, onToggle }: SidebarProps) {
             </TooltipContent>
           </Tooltip>
           <span
-            className={`ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-all duration-300 ${
+            className={`ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${
               sidebarOpen ? "max-w-48 opacity-100" : "max-w-0 opacity-0"
             }`}
           >
@@ -37,9 +38,9 @@ export function Sidebar({ sidebarOpen, onToggle }: SidebarProps) {
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 pt-4">
-          <NavSection title="MAIN MENU" visible={sidebarOpen} items={NAV_MAIN} />
-          <NavSection title="MANAGEMENT" visible={sidebarOpen} items={NAV_MANAGEMENT} />
-          <NavSection title="SETTING & OTHERS" visible={sidebarOpen} items={NAV_SETTINGS} />
+          <NavSection title="MAIN MENU" visible={sidebarOpen} items={NAV_MAIN} currentPath={currentPath} />
+          <NavSection title="MANAGEMENT" visible={sidebarOpen} items={NAV_MANAGEMENT} currentPath={currentPath} />
+          <NavSection title="SETTING & OTHERS" visible={sidebarOpen} items={NAV_SETTINGS} currentPath={currentPath} />
         </div>
 
         <div className="shrink-0 p-3">

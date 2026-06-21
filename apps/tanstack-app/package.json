@@ -29,6 +29,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.5.0",
     "@repo/biome-config": "workspace:*",
     "@repo/tailwind-config": "workspace:*",
     "@repo/vitest-config": "workspace:*",

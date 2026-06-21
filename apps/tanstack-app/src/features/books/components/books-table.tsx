@@ -65,64 +65,75 @@ export function BooksTable({ books, onView, onEdit, onDelete }: BooksTableProps)
             </TableRow>
           </TableHeader>
           <TableBody>
-            {books.map((book, i) => (
-              <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
-                <TableCell className="px-4 text-xs font-mono text-muted-foreground">{book.id}</TableCell>
-                <TableCell className="px-4">
-                  <TitleCell book={book} />
-                </TableCell>
-                <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden lg:table-cell">
-                  {book.isbn}
-                </TableCell>
-                <TableCell className="px-4 hidden md:table-cell">
-                  <Badge variant="secondary" className="font-medium">
-                    {book.category}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-4">
-                  <Badge variant="outline" className={statusBadge(book.status)}>
-                    {book.status}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-4 text-xs font-medium text-muted-foreground hidden xl:table-cell">
-                  {book.location}
-                </TableCell>
-                <TableCell className="px-4 hidden sm:table-cell text-xs font-medium text-muted-foreground">
-                  {book.language}
-                </TableCell>
-                <TableCell className="px-4 text-right text-sm font-semibold tabular-nums">
-                  {book.timesBorrowed.toLocaleString()}
-                </TableCell>
-                <TableCell className="px-2 text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-xs" className="size-8">
-                        <MoreHorizontal className="size-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" sideOffset={4} className="w-40">
-                      <DropdownMenuItem className="cursor-pointer" onClick={() => onView?.(book)}>
-                        <Eye className="size-4" />
-                        View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="cursor-pointer" onClick={() => onEdit?.(book)}>
-                        <Pencil className="size-4" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        variant="destructive"
-                        className="cursor-pointer"
-                        onClick={() => setDeleteTarget(book)}
-                      >
-                        <Trash2 className="size-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+            {books.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={9} className="h-32 text-center">
+                  <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                    <p className="text-sm font-medium">No books found</p>
+                    <p className="text-xs">Add a new book to get started.</p>
+                  </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              books.map((book, i) => (
+                <TableRow key={book.id} className={i % 2 === 0 ? "bg-muted/10" : ""}>
+                  <TableCell className="px-4 text-xs font-mono text-muted-foreground">{book.id}</TableCell>
+                  <TableCell className="px-4">
+                    <TitleCell book={book} />
+                  </TableCell>
+                  <TableCell className="px-4 text-xs font-mono text-muted-foreground hidden lg:table-cell">
+                    {book.isbn}
+                  </TableCell>
+                  <TableCell className="px-4 hidden md:table-cell">
+                    <Badge variant="secondary" className="font-medium">
+                      {book.category}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4">
+                    <Badge variant="outline" className={statusBadge(book.status)}>
+                      {book.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4 text-xs font-medium text-muted-foreground hidden xl:table-cell">
+                    {book.location}
+                  </TableCell>
+                  <TableCell className="px-4 hidden sm:table-cell text-xs font-medium text-muted-foreground">
+                    {book.language}
+                  </TableCell>
+                  <TableCell className="px-4 text-right text-sm font-semibold tabular-nums">
+                    {book.timesBorrowed.toLocaleString()}
+                  </TableCell>
+                  <TableCell className="px-2 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon-xs" className="size-8">
+                          <MoreHorizontal className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" sideOffset={4} className="w-40">
+                        <DropdownMenuItem className="cursor-pointer" onClick={() => onView?.(book)}>
+                          <Eye className="size-4" />
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer" onClick={() => onEdit?.(book)}>
+                          <Pencil className="size-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          variant="destructive"
+                          className="cursor-pointer"
+                          onClick={() => setDeleteTarget(book)}
+                        >
+                          <Trash2 className="size-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </div>

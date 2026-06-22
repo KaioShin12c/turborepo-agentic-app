@@ -8,7 +8,7 @@ import {
 } from "@repo/ui/components/ui/dropdown-menu";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@repo/ui/components/ui/sheet";
-import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
+import { SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { ChevronsUpDown, Library, LogOut, Settings, User } from "lucide-react";
 import { NAV_MAIN, NAV_MANAGEMENT, NAV_SETTINGS } from "./nav-data";
 import { NavSection } from "./nav-section";
@@ -50,7 +50,7 @@ export function MobileNav({
           <SheetTitle className="text-xl font-bold tracking-tight text-primary">Bookary</SheetTitle>
           <SheetDescription className="sr-only">Mobile navigation menu</SheetDescription>
         </SheetHeader>
-        <TooltipProvider delayDuration={0}>
+        <SidebarProvider className="flex flex-col min-h-0 flex-1">
           <div className="flex-1 overflow-y-auto px-4 pt-4 pb-4">
             <NavSection
               title="MAIN MENU"
@@ -74,7 +74,7 @@ export function MobileNav({
               onItemClick={close}
             />
           </div>
-        </TooltipProvider>
+        </SidebarProvider>
 
         <Separator />
         <div className="shrink-0 px-3 pb-3">

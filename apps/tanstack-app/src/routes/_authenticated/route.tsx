@@ -3,7 +3,6 @@ import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { createFileRoute, Outlet, redirect, useRouter, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { getCurrentSession } from "../../features/auth/auth.functions";
-import { MobileNav } from "../../shared/components/mobile-nav";
 import { AppSidebar } from "../../shared/components/sidebar";
 import { TopBar } from "../../shared/components/top-bar";
 
@@ -25,7 +24,6 @@ function AuthenticatedLayout() {
   const router = useRouter();
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
 
   const handleSignOut = async () => {
@@ -42,11 +40,7 @@ function AuthenticatedLayout() {
 
   return (
     <SidebarProvider defaultOpen={true} style={{ "--sidebar-width-icon": "4rem" } as React.CSSProperties}>
-      <AppSidebar currentPath={currentPath} className="hidden lg:flex" />
-
-      <MobileNav
-        open={mobileNavOpen}
-        onOpenChange={setMobileNavOpen}
+      <AppSidebar
         currentPath={currentPath}
         userName={session?.user?.name}
         userEmail={session?.user?.email}
@@ -55,9 +49,9 @@ function AuthenticatedLayout() {
       />
 
       <SidebarInset className="min-w-0 overflow-hidden">
-        <TopBar session={session} onSignOut={handleSignOut} onOpenMobileNav={() => setMobileNavOpen(true)} />
+        <TopBar session={session} onSignOut={handleSignOut} />
 
-        <div className="flex-1 overflow-auto p-6 space-y-6">
+        <div className="flex-1 overflow-auto p-3 sm:p-6 space-y-6">
           {signOutError && (
             <div
               role="alert"

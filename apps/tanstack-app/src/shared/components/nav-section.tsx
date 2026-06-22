@@ -24,11 +24,12 @@ interface NavSectionProps {
 
 export function NavSection({ title, visible, items, currentPath, onItemClick }: NavSectionProps) {
   return (
-    <SidebarGroup className="mt-6 first:mt-0 p-0">
+    <SidebarGroup className="first:mt-0 p-0">
       <SidebarGroupLabel
         className={cn(
           !visible && "lg:hidden",
-          "mb-3 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground",
+          "mb-1 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground",
+          "group-data-[collapsible=icon]:hidden",
         )}
       >
         {title}
@@ -53,11 +54,13 @@ export function NavSection({ title, visible, items, currentPath, onItemClick }: 
                   "font-medium",
                   "duration-300",
                   "[&>svg]:size-[18px]",
+                  "group-data-[collapsible=icon]:size-10!",
+                  "group-data-[collapsible=icon]:justify-center",
                 )}
               >
                 <Link to={item.path} onClick={onItemClick} className="flex items-center gap-3">
                   <item.icon size={18} />
-                  <span>{item.label}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -35,10 +35,12 @@ export function NavSection({ title, visible, items, currentPath, onItemClick }: 
                   to={item.path}
                   onClick={onItemClick}
                   className={`flex w-full items-center gap-3 rounded-lg px-3 h-10 text-sm font-medium transition-[width,height,padding,gap] duration-300 ${
-                    visible ? "" : "lg:size-10 lg:p-0 lg:gap-0"
+                    visible ? "" : "lg:size-10 lg:px-[11px] lg:gap-0"
                   } ${active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted"}`}
                 >
-                  <item.icon size={18} />
+                  <span className="shrink-0">
+                    <item.icon size={18} />
+                  </span>
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0"}`}
                   >

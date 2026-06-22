@@ -1,9 +1,10 @@
 import { authClient } from "@repo/auth/client";
+import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { createFileRoute, Outlet, redirect, useRouter, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { getCurrentSession } from "../../features/auth/auth.functions";
 import { MobileNav } from "../../shared/components/mobile-nav";
-import { Sidebar } from "../../shared/components/sidebar";
+import { AppSidebar } from "../../shared/components/sidebar";
 import { TopBar } from "../../shared/components/top-bar";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -24,7 +25,6 @@ function AuthenticatedLayout() {
   const router = useRouter();
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [signOutError, setSignOutError] = useState<string | null>(null);
 
@@ -41,13 +41,8 @@ function AuthenticatedLayout() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background font-sans text-foreground">
-      <Sidebar
-        sidebarOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
-        currentPath={currentPath}
-        className="hidden lg:flex"
-      />
+    <SidebarProvider defaultOpen={true} style={{ "--sidebar-width-icon": "4rem" } as React.CSSProperties}>
+      <AppSidebar currentPath={currentPath} className="hidden lg:flex" />
 
       <MobileNav
         open={mobileNavOpen}
@@ -59,7 +54,7 @@ function AuthenticatedLayout() {
         onSignOut={handleSignOut}
       />
 
-      <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
+      <SidebarInset className="min-w-0 overflow-hidden">
         <TopBar session={session} onSignOut={handleSignOut} onOpenMobileNav={() => setMobileNavOpen(true)} />
 
         <div className="flex-1 overflow-auto p-6 space-y-6">
@@ -73,7 +68,7 @@ function AuthenticatedLayout() {
           )}
           <Outlet />
         </div>
-      </main>
-    </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

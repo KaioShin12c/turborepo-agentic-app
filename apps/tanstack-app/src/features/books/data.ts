@@ -22,7 +22,7 @@ function generateBook(index: number): Book {
     language: faker.helpers.arrayElement(LANGUAGES),
     status: faker.helpers.arrayElement(BOOK_STATUSES),
     location: `${section}-${shelf}-${position}`,
-    addedDate: faker.date.between({ from: "2023-10-01", to: "2024-10-01" }).toISOString().split("T")[0],
+    addedDate: faker.date.between({ from: "2023-10-01", to: "2024-10-01" }).toISOString().split("T")[0]!,
     timesBorrowed: faker.number.int({ min: 0, max: 120 }),
   };
 }

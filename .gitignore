@@ -33,6 +33,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Logs
+*.log
+
+# JetBrains IDE
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
 # Misc
 .DS_Store
 *.pem

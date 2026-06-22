@@ -38,10 +38,7 @@ export function NavSection({ title, visible, items, currentPath, onItemClick }: 
                     visible ? "" : "lg:size-10 lg:p-0 lg:gap-0"
                   } ${active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted"}`}
                 >
-                  <item.icon
-                    size={18}
-                    className={`shrink-0 transition-[margin] duration-300 ${visible ? "" : "lg:ml-[11px]"}`}
-                  />
+                  <item.icon size={18} />
                   <span
                     className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0"}`}
                   >

@@ -4,5 +4,5 @@
     "outDir": "./dist",
     "types": ["node"]
   },
-  "include": ["src", "drizzle.config.ts"] // Đảm bảo drizzle.config.ts cũng được quét qua
+  "include": ["src", "drizzle.config.ts"]
 }

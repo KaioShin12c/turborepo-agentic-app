@@ -296,18 +296,18 @@ function SignupPage() {
                         I agree to Lumina's account policies and protected enrollment terms.
                       </Label>
                       <div className="flex flex-wrap gap-2 pl-0.5 font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.18em]">
-                        <Link
-                          to="/terms"
+                        <a
+                          href="/terms"
                           className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-primary transition-colors hover:border-primary/40 hover:bg-primary/15 hover:text-primary/80"
                         >
                           Terms
-                        </Link>
-                        <Link
-                          to="/privacy"
+                        </a>
+                        <a
+                          href="/privacy"
                           className="rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-primary transition-colors hover:border-primary/40 hover:bg-primary/15 hover:text-primary/80"
                         >
                           Privacy Policy
-                        </Link>
+                        </a>
                       </div>
                       {errors.acceptedTerms ? (
                         <p id="terms-error" className="font-sans text-sm text-destructive">
@@ -384,19 +384,19 @@ function SignupPage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-2 font-[ui-monospace,Menlo,monospace] text-[10px] uppercase tracking-[0.18em]">
             <ScrollText className="size-3.5 text-muted-foreground" />
-            <Link
-              to="/privacy"
+            <a
+              href="/privacy"
               className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
             >
               Privacy Policy
-            </Link>
+            </a>
             <span className="text-muted-foreground">/</span>
-            <Link
-              to="/terms"
+            <a
+              href="/terms"
               className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
             >
               Terms of Service
-            </Link>
+            </a>
           </div>
         </div>
       </div>

@@ -6,9 +6,7 @@
     "allowImportingTsExtensions": true,
     "noEmit": true,
     "declaration": false,
-    "declarationMap": false,
-    "outDir": "dist",
-    "rootDir": "src"
+    "declarationMap": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

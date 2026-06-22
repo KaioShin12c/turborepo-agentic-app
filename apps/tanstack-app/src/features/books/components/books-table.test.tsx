@@ -34,7 +34,8 @@ const book2 = makeBook({
 
 function openDropdown(rowIndex: number) {
   const triggers = document.querySelectorAll('button[aria-haspopup="menu"]');
-  fireEvent.pointerDown(triggers[rowIndex]);
+  const trigger = triggers[rowIndex];
+  if (trigger) fireEvent.pointerDown(trigger);
 }
 
 describe("BooksTable", () => {

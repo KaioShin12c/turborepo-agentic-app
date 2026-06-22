@@ -1,4 +1,5 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip";
+import { cn } from "@repo/ui/lib/utils";
 import { ArrowLeftToLine, ArrowRightToLine, Library } from "lucide-react";
 import { NAV_MAIN, NAV_MANAGEMENT, NAV_SETTINGS } from "./nav-data";
 import { NavSection } from "./nav-section";
@@ -14,9 +15,11 @@ export function Sidebar({ sidebarOpen, onToggle, currentPath, className }: Sideb
   return (
     <TooltipProvider delayDuration={0}>
       <aside
-        className={`flex h-full shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300 ${
-          sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16"
-        } ${className ?? ""}`}
+        className={cn(
+          "flex h-full shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300",
+          sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16",
+          className,
+        )}
       >
         <div className="flex h-[72px] shrink-0 items-center border-b border-border px-3 overflow-hidden">
           <Tooltip>
@@ -30,9 +33,10 @@ export function Sidebar({ sidebarOpen, onToggle, currentPath, className }: Sideb
             </TooltipContent>
           </Tooltip>
           <span
-            className={`ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${
-              sidebarOpen ? "max-w-48 opacity-100" : "max-w-0 opacity-0"
-            }`}
+            className={cn(
+              "ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300",
+              sidebarOpen ? "max-w-48 opacity-100" : "max-w-0 opacity-0",
+            )}
           >
             Bookary
           </span>

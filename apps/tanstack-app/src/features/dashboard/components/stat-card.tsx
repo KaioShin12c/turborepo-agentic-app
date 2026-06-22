@@ -1,3 +1,4 @@
+import { cn } from "@repo/ui/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 
 interface StatCardProps {
@@ -25,9 +26,10 @@ export function StatCard({ icon: Icon, label, value, sub, change, changeType }: 
         </div>
         <div className="text-right">
           <div
-            className={`inline-flex items-center gap-1 text-sm font-semibold ${
-              changeType === "up" ? "text-success" : "text-danger"
-            }`}
+            className={cn(
+              "inline-flex items-center gap-1 text-sm font-semibold",
+              changeType === "up" ? "text-success" : "text-danger",
+            )}
           >
             {changeType === "up" ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
             {change}

@@ -1,4 +1,5 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@repo/ui/components/ui/tooltip";
+import { cn } from "@repo/ui/lib/utils";
 import { Link } from "@tanstack/react-router";
 
 export interface NavItem {
@@ -19,9 +20,10 @@ export function NavSection({ title, visible, items, currentPath, onItemClick }: 
   return (
     <div className="mt-6 first:mt-0">
       <div
-        className={`mb-3 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground px-2 overflow-hidden whitespace-nowrap transition-[max-width,opacity,padding] duration-300 ${
-          visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0 lg:px-0"
-        }`}
+        className={cn(
+          "mb-3 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground px-2 overflow-hidden whitespace-nowrap transition-[max-width,opacity,padding] duration-300",
+          visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0 lg:px-0",
+        )}
       >
         {title}
       </div>
@@ -34,15 +36,20 @@ export function NavSection({ title, visible, items, currentPath, onItemClick }: 
                 <Link
                   to={item.path}
                   onClick={onItemClick}
-                  className={`flex w-full items-center gap-3 rounded-lg px-3 h-10 text-sm font-medium transition-[width,height,padding,gap] duration-300 ${
-                    visible ? "" : "lg:size-10 lg:px-[11px] lg:gap-0"
-                  } ${active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted"}`}
+                  className={cn(
+                    "flex w-full items-center gap-3 rounded-lg px-3 h-10 text-sm font-medium transition-[width,height,padding,gap] duration-300",
+                    visible ? "" : "lg:size-10 lg:px-[11px] lg:gap-0",
+                    active ? "bg-primary text-primary-foreground" : "text-sidebar-foreground/80 hover:bg-muted",
+                  )}
                 >
                   <span className="shrink-0">
                     <item.icon size={18} />
                   </span>
                   <span
-                    className={`overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0"}`}
+                    className={cn(
+                      "overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300",
+                      visible ? "max-w-48 opacity-100" : "max-w-0 opacity-0",
+                    )}
                   >
                     {item.label}
                   </span>

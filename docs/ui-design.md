@@ -14,6 +14,7 @@
 - Do not hardcode colors, spacing, border radius, shadows, or z-index values in components.
 - Prefer design-system values over arbitrary Tailwind values.
 - Avoid arbitrary Tailwind values (`w-[347px]`, `text-[#123456]`, etc.) unless required by a documented design requirement.
+- Never concatenate class strings manually (string templates, `+`, or conditional ternaries in template literals). Always use `cn()` from `@repo/ui/lib/utils` for conditional class merging. This ensures `tailwind-merge` resolves conflicting Tailwind classes correctly.
 - Reuse existing spacing, typography, and color scales.
 - All new UI must work correctly in both light and dark themes using existing shadcn/ui theme tokens.
 

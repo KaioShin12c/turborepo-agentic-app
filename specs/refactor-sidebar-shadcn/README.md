@@ -36,7 +36,7 @@ graph TD
 - [x] [task-01-nav-section](./tasks/task-01-nav-section.md) — Refactor nav-section.tsx
 
 ### Wave 2
-- [ ] [task-02-app-sidebar](./tasks/task-02-app-sidebar.md) — Refactor sidebar.tsx
+- [x] [task-02-app-sidebar](./tasks/task-02-app-sidebar.md) — Refactor sidebar.tsx
 
 ### Wave 3
 - [ ] [task-03-update-layout](./tasks/task-03-update-layout.md) — Update authenticated layout

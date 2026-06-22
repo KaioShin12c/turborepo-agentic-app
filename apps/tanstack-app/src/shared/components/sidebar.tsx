@@ -1,63 +1,55 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui/components/ui/tooltip";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, useSidebar } from "@repo/ui/components/ui/sidebar";
 import { cn } from "@repo/ui/lib/utils";
 import { ArrowLeftToLine, ArrowRightToLine, Library } from "lucide-react";
 import { NAV_MAIN, NAV_MANAGEMENT, NAV_SETTINGS } from "./nav-data";
 import { NavSection } from "./nav-section";
 
-interface SidebarProps {
-  sidebarOpen: boolean;
-  onToggle: () => void;
+interface AppSidebarProps {
   currentPath?: string;
   className?: string;
 }
 
-export function Sidebar({ sidebarOpen, onToggle, currentPath, className }: SidebarProps) {
+export function AppSidebar({ currentPath, className }: AppSidebarProps) {
   return (
-    <TooltipProvider delayDuration={0}>
-      <aside
-        className={cn(
-          "flex h-full shrink-0 flex-col border-r border-border bg-card transition-[width] duration-300",
-          sidebarOpen ? "w-64" : "w-0 overflow-hidden lg:w-16",
-          className,
-        )}
-      >
-        <div className="flex h-[72px] shrink-0 items-center border-b border-border px-3 overflow-hidden">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
-                <Library size={22} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right" align="center" hidden={sidebarOpen}>
-              Bookary
-            </TooltipContent>
-          </Tooltip>
-          <span
-            className={cn(
-              "ml-2 text-2xl font-bold tracking-tight text-primary overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300",
-              sidebarOpen ? "max-w-48 opacity-100" : "max-w-0 opacity-0",
-            )}
-          >
-            Bookary
-          </span>
+    <Sidebar collapsible="icon" className={cn("border-r border-border bg-card", className)}>
+      <SidebarHeader className="flex h-[72px] shrink-0 flex-row items-center gap-0 border-b border-border px-3 overflow-hidden">
+        <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground">
+          <Library size={22} />
         </div>
+        <span className="ml-2 text-2xl font-bold tracking-tight text-primary truncate group-data-[collapsible=icon]:hidden">
+          Bookary
+        </span>
+      </SidebarHeader>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 pt-4">
-          <NavSection title="MAIN MENU" visible={sidebarOpen} items={NAV_MAIN} currentPath={currentPath} />
-          <NavSection title="MANAGEMENT" visible={sidebarOpen} items={NAV_MANAGEMENT} currentPath={currentPath} />
-          <NavSection title="SETTING & OTHERS" visible={sidebarOpen} items={NAV_SETTINGS} currentPath={currentPath} />
-        </div>
+      <SidebarContent className="overflow-y-auto overflow-x-hidden px-3 pt-4">
+        <NavSection title="MAIN MENU" visible={true} items={NAV_MAIN} currentPath={currentPath} />
+        <NavSection title="MANAGEMENT" visible={true} items={NAV_MANAGEMENT} currentPath={currentPath} />
+        <NavSection title="SETTING & OTHERS" visible={true} items={NAV_SETTINGS} currentPath={currentPath} />
+      </SidebarContent>
 
-        <div className="shrink-0 p-3">
-          <button
-            type="button"
-            onClick={onToggle}
-            className="flex w-full items-center justify-center rounded-lg h-10 bg-muted text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
-          >
-            {sidebarOpen ? <ArrowLeftToLine size={18} /> : <ArrowRightToLine size={18} />}
-          </button>
-        </div>
-      </aside>
-    </TooltipProvider>
+      <SidebarFooter className="p-3">
+        <SidebarToggleButton />
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+
+function SidebarToggleButton() {
+  const { open, toggleSidebar } = useSidebar();
+
+  return (
+    <button
+      type="button"
+      onClick={toggleSidebar}
+      className={cn(
+        "flex w-full items-center justify-center rounded-lg h-10",
+        "bg-muted text-muted-foreground",
+        "hover:bg-accent hover:text-foreground",
+        "transition-colors",
+      )}
+    >
+      {open ? <ArrowLeftToLine size={18} /> : <ArrowRightToLine size={18} />}
+      <span className="sr-only">Toggle Sidebar</span>
+    </button>
   );
 }

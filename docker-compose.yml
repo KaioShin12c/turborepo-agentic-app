@@ -4,9 +4,9 @@ services:
     container_name: turborepo-agentic-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: turborepo_agentic_app
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-turborepo_agentic_app}
     ports:
       - "5432:5432"
     volumes:

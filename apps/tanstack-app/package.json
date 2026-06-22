@@ -41,8 +41,6 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
-    "drizzle-kit": "^0.31.4",
-    "esbuild": "^0.27.0",
     "jsdom": "^28.1.0",
     "shadcn": "^4.10.0",
     "typescript": "5.9.2",

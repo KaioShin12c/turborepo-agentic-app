@@ -6,6 +6,5 @@ export const reactConfig = mergeConfig(baseConfig, {
   plugins: [react()],
   test: {
     environment: "jsdom",
-    setupFiles: ["./src/vitest.setup.ts"],
   },
 });

@@ -11,6 +11,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  * so that vitest can resolve imports like `import { cn } from "src/lib/utils"`.
  */
 const projectConfig = defineConfig({
+  test: {
+    setupFiles: ["./src/vitest.setup.ts"],
+  },
   resolve: {
     alias: {
       src: path.resolve(__dirname, "src"),

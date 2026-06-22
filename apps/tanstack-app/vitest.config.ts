@@ -1,9 +1,11 @@
 import path from "node:path";
 import { reactConfig } from "@repo/vitest-config/react";
-import { defineConfig } from "vitest/config";
+import { defineConfig, mergeConfig } from "vitest/config";
 
-export default defineConfig({
-  ...reactConfig,
+const projectConfig = defineConfig({
+  test: {
+    setupFiles: ["./src/vitest.setup.ts"],
+  },
   resolve: {
     alias: {
       // Mirror the "#/*" path alias from tsconfig.json so test files
@@ -15,3 +17,5 @@ export default defineConfig({
     },
   },
 });
+
+export default mergeConfig(reactConfig, projectConfig);

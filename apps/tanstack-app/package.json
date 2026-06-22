@@ -26,7 +26,7 @@
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.77.0",
     "recharts": "^3.8.1",
-    "zod": "^4.4.3"
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.5.0",
@@ -45,7 +45,7 @@
     "esbuild": "^0.27.0",
     "jsdom": "^28.1.0",
     "shadcn": "^4.10.0",
-    "typescript": "^6.0.2",
+    "typescript": "5.9.2",
     "vite": "^8.0.0",
     "vitest": "^4.1.5"
   }

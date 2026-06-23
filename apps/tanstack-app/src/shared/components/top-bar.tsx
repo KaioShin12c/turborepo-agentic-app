@@ -8,8 +8,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@repo/ui/components/ui/dropdown-menu";
+import { Separator } from "@repo/ui/components/ui/separator";
 import { useSidebar } from "@repo/ui/components/ui/sidebar";
 import { Bell, ChevronDown, LogOut, Menu, Settings, User } from "lucide-react";
+import { LibrarySelector } from "./library-selector";
 import { ModeToggle } from "./mode-toggle";
 
 interface TopBarProps {
@@ -30,13 +32,17 @@ export function TopBar({ session, onSignOut }: TopBarProps) {
     .slice(0, 2);
 
   return (
-    <header className="flex items-center gap-2 sm:gap-4 border-b border-border bg-background px-3 sm:px-6 h-14 sm:h-[60px] shrink-0">
+    <header className="flex items-center gap-2 sm:gap-4 border-b border-border bg-background px-3 sm:px-4 h-14 sm:h-[60px] shrink-0">
       <SidebarToggle />
-
+      <div className="flex items-center h-full">
+        <Separator orientation="vertical" className="h-full" />
+        <LibrarySelector />
+      </div>
       <div className="flex-1" />
 
       <div className="flex items-center gap-1 sm:gap-2">
         <ModeToggle />
+
         <button
           type="button"
           className="grid size-9 sm:size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"

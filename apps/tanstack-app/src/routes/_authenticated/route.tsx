@@ -51,7 +51,7 @@ function AuthenticatedLayout() {
       <SidebarInset className="min-w-0 overflow-hidden">
         <TopBar session={session} onSignOut={handleSignOut} />
 
-        <div className="flex-1 overflow-auto p-3 sm:p-6 space-y-6">
+        <div className="flex-1 overflow-auto p-3 sm:p-4 space-y-4">
           {signOutError && (
             <div
               role="alert"

@@ -29,7 +29,7 @@ export function LibrarySelector() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="flex items-center justify-between gap-4 h-full w-[160px] rounded-lg px-3 py-1.5 text-sm hover:bg-muted/60 transition-colors cursor-pointer"
+          className="flex items-center justify-between gap-4 h-full w-40 rounded-lg px-3 py-1.5 text-sm hover:bg-muted/60 transition-colors cursor-pointer outline-none"
         >
           <div className="flex flex-col items-start min-w-0">
             <span className="text-xs text-muted-foreground">Your library</span>

@@ -10,7 +10,7 @@ import {
 } from "@repo/ui/components/ui/dropdown-menu";
 import { Separator } from "@repo/ui/components/ui/separator";
 import { useSidebar } from "@repo/ui/components/ui/sidebar";
-import { Bell, ChevronDown, LogOut, Menu, Settings, User } from "lucide-react";
+import { ChevronDown, LogOut, Menu, Settings, User } from "lucide-react";
 import { LibrarySelector } from "./library-selector";
 import { ModeToggle } from "./mode-toggle";
 
@@ -35,28 +35,30 @@ export function TopBar({ session, onSignOut }: TopBarProps) {
     <header className="flex items-center gap-2 sm:gap-4 border-b border-border bg-background px-3 sm:px-4 h-14 sm:h-[60px] shrink-0">
       <SidebarToggle />
       <div className="flex items-center h-full">
-        <Separator orientation="vertical" className="h-full" />
+        <Separator orientation="vertical" className="h-8" />
         <LibrarySelector />
       </div>
       <div className="flex-1" />
 
-      <div className="flex items-center gap-1 sm:gap-2">
+      <div className="flex items-center gap-2 sm:gap-4">
         <ModeToggle />
 
-        <button
+        {/* <button
           type="button"
-          className="grid size-9 sm:size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground"
+          aria-label="Notifications"
+          className="grid size-9 sm:size-10 place-items-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors cursor-pointer"
         >
           <Bell size={18} />
-        </button>
+        </button> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="flex items-center gap-2.5 rounded-2xl px-1.5 sm:px-2.5 py-1.5 text-sm hover:bg-muted/60 transition-colors"
+              aria-label="User menu"
+              className="flex items-center gap-2.5 rounded-2xl text-sm hover:bg-muted/60 transition-colors cursor-pointer"
             >
-              <Avatar size="sm">
+              <Avatar size="default">
                 <AvatarImage src={userImage} alt={userName} />
                 <AvatarFallback>{initials}</AvatarFallback>
               </Avatar>
@@ -68,7 +70,7 @@ export function TopBar({ session, onSignOut }: TopBarProps) {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" sideOffset={8} className="w-56">
-            <div className="hidden sm:block">
+            <div>
               <div className="flex items-center gap-3 px-2 py-2.5">
                 <Avatar size="lg">
                   <AvatarImage src={userImage} alt={userName} />
@@ -110,7 +112,12 @@ function SidebarToggle() {
   const { toggleSidebar } = useSidebar();
 
   return (
-    <button type="button" onClick={toggleSidebar} className="cursor-pointer">
+    <button
+      type="button"
+      onClick={toggleSidebar}
+      aria-label="Toggle sidebar"
+      className="grid size-9 place-items-center rounded-lg hover:bg-muted/60 transition-colors cursor-pointer"
+    >
       <Menu size={20} />
     </button>
   );

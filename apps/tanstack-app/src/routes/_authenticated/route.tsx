@@ -40,13 +40,7 @@ function AuthenticatedLayout() {
 
   return (
     <SidebarProvider defaultOpen={true} style={{ "--sidebar-width-icon": "4rem" } as React.CSSProperties}>
-      <AppSidebar
-        currentPath={currentPath}
-        userName={session?.user?.name}
-        userEmail={session?.user?.email}
-        userImage={session?.user?.image || ""}
-        onSignOut={handleSignOut}
-      />
+      <AppSidebar currentPath={currentPath} />
 
       <SidebarInset className="min-w-0 overflow-hidden">
         <TopBar session={session} onSignOut={handleSignOut} />
